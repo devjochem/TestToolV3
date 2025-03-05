@@ -16,6 +16,7 @@ class KBWindow(QMainWindow):
     def keyPressEvent(self, event):
         if isinstance(event, QKeyEvent):
             pkey = event.key()
+            #print(event.nativeScanCode())
             self.setColor(pkey,"orange")
 
     def keyReleaseEvent(self, event):

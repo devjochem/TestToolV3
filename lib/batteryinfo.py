@@ -42,12 +42,3 @@ class Info:
             print(data["health"])
             print(data)
             self.info["BAT" + str(i)] = data
-
-
-
-
-
-
-if __name__ == "__main__":
-    print(Info().listBat())
-    pass

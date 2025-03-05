@@ -27,7 +27,6 @@ class LCDWindow(QMainWindow):
                 self.close()
             elif pkey.real == 32:
                 self.change_color()
-            #print(pkey.real == 16777216)
 
     def change_color(self):
         color = self.colors.pop(0)

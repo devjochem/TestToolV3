@@ -1,7 +1,7 @@
 # This Python file uses the following encoding: utf-8
 import sys
 
-from PySide6.QtWidgets import QApplication, QMainWindow, QTextEdit, QTableWidget, QAbstractItemView, QTableWidgetItem,QPushButton
+from PySide6.QtWidgets import QApplication, QMainWindow, QAbstractItemView, QTableWidgetItem
 from lib.systemspecs import Specs
 from lib.batteryinfo import Info
 

@@ -43,11 +43,6 @@ class Ui_LCDTest(object):
 
         self.gridLayout.addItem(self.verticalSpacer, 0, 1, 1, 1)
 
-        #self.exitButton = QPushButton(self.centralwidget)
-        #self.exitButton.setObjectName(u"exitButton")
-        #self.exitButton.setAutoDefault(False)
-
-        #self.gridLayout.addWidget(self.exitButton, 1, 1, 1, 1)
 
         LCDTest.setCentralWidget(self.centralwidget)
         self.statusbar = QStatusBar(LCDTest)
@@ -57,10 +52,7 @@ class Ui_LCDTest(object):
         self.retranslateUi(LCDTest)
 
         QMetaObject.connectSlotsByName(LCDTest)
-    # setupUi
 
     def retranslateUi(self, LCDTest):
         LCDTest.setWindowTitle(QCoreApplication.translate("LCDTest", u"MainWindow", None))
-        #self.exitButton.setText(QCoreApplication.translate("LCDTest", u"Exit", None))
-    # retranslateUi
 
