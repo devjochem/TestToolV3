@@ -7,7 +7,7 @@ from PySide6.QtWidgets import QMainWindow
 # You need to run the following command to generate the ui_form.py file
 #     pyside6-uic form.ui -o ui_form.py, or
 #     pyside2-uic form.ui -o ui_form.py
-from testtool.windows.lcdtest.lcd import Ui_LCDTest
+from windows.lcdtest.lcd import Ui_LCDTest
 
 class LCDWindow(QMainWindow):
     def __init__(self, parent=None):

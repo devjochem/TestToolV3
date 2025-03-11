@@ -3,7 +3,7 @@
 # if __name__ == "__main__":
 #     pass
 import os
-from testtool.lib.readfile import ReadFile
+from lib.readfile import ReadFile
 
 class Info:
 

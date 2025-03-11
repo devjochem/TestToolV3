@@ -4,8 +4,8 @@ from PySide6.QtCore import Slot, QByteArray, qWarning, QFile, QIODevice
 from PySide6.QtMultimedia import QAudioDevice, QAudioFormat, QAudioSource, QAudio, QMediaDevices, QAudioSink
 from PySide6.QtWidgets import QApplication, QMainWindow
 
-from testtool.windows.audiotest.audiotest import Ui_MainWindow
-from testtool.windows.audiotest.renderarea import RenderArea, AudioInfo
+from windows.audiotest.audiotest import Ui_MainWindow
+from windows.audiotest.renderarea import RenderArea, AudioInfo
 
 
 class AudioTest(QMainWindow):

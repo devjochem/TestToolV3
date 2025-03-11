@@ -7,10 +7,10 @@ import os
 import re
 from typing import List, Tuple, Union
 from pySMART import Device, SMARTCTL
-from testtool.lib.diskinfo.utils import _read_file, _read_udev_property, _read_udev_path, size_in_hrf
-from testtool.lib.diskinfo.disktype import DiskType
-from testtool.lib.diskinfo.partition import Partition
-from testtool.lib.diskinfo.disksmart import DiskSmartData, SmartAttribute, NvmeAttributes
+from lib.diskinfo.utils import _read_file, _read_udev_property, _read_udev_path, size_in_hrf
+from lib.diskinfo.disktype import DiskType
+from lib.diskinfo.partition import Partition
+from lib.diskinfo.disksmart import DiskSmartData, SmartAttribute, NvmeAttributes
 
 
 class Disk:

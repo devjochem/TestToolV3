@@ -1,8 +1,8 @@
 from PySide6.QtGui import QKeyEvent
 from PySide6.QtWidgets import QApplication, QMainWindow, QLabel
-from testtool.windows.kbtest.key import Key, KEY_MAP
+from windows.kbtest.key import Key, KEY_MAP
 
-from testtool.windows.kbtest.kbtest import Ui_MainWindow
+from windows.kbtest.kbtest import Ui_MainWindow
 
 class KBWindow(QMainWindow):
 

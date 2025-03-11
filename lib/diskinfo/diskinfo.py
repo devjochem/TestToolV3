@@ -5,8 +5,8 @@
 import os
 from typing import List
 
-from testtool.lib.diskinfo.disk import Disk
-from testtool.lib.diskinfo.disktype import DiskType
+from lib.diskinfo.disk import Disk
+from lib.diskinfo.disktype import DiskType
 
 
 class DiskInfo:

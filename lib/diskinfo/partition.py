@@ -6,7 +6,7 @@ import os.path
 import subprocess
 import re
 from typing import List, Tuple
-from testtool.lib.diskinfo.utils import _read_udev_property, _read_udev_path, size_in_hrf
+from lib.diskinfo.utils import _read_udev_property, _read_udev_path, size_in_hrf
 
 
 class Partition:

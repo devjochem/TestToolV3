@@ -1,7 +1,7 @@
 from subprocess import Popen, PIPE, DEVNULL
 
-from testtool.lib.diskinfo import DiskInfo
-from testtool.lib.readfile import ReadFile
+from lib.diskinfo import DiskInfo
+from lib.readfile import ReadFile
 
 
 class Specs:
@@ -27,15 +27,15 @@ class Specs:
         return stdout
 
     def getCPU(self):
-        s = self.run_command("sh testtool/scripts/getcpu.sh")
+        s = self.run_command('echo "$(neofetch --cpu_cores off cpu)"').replace('cpu:', '')
         return s
 
     def getGPU(self):
-        s = self.run_command(["sh testtool/scripts/getgpu.sh"])
+        s = self.run_command(['echo "$(neofetch gpu)"'])
         return s.splitlines()
 
     def getMemory(self):
-        s = self.run_command([f"sh testtool/scripts/getmemory.sh"])
+        s = self.run_command(['echo "$(neofetch memory)"']).replace('memory:', '')
         return s
 
     def getVendor(self):

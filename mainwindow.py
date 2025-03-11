@@ -1,21 +1,19 @@
 # This Python file uses the following encoding: utf-8
-import sys
 
-from PySide6.QtWidgets import QApplication, QMainWindow, QAbstractItemView, QTableWidgetItem
-from testtool.lib.systemspecs import Specs
-from testtool.lib.batteryinfo import Info
-from testtool.lib.diskinfo import *
-from testtool.windows.audiotest.audiotestwindow import AudioTest
+from PySide6.QtWidgets import QMainWindow, QAbstractItemView, QTableWidgetItem
+from lib.systemspecs import Specs
+from lib.batteryinfo import Info
+from windows.audiotest.audiotestwindow import AudioTest
 
-from testtool.windows.lcdtest.lcdtestwindow import LCDWindow
-from testtool.windows.kbtest.kbtestwindow import KBWindow
-from testtool.windows.camtest.camtestwindow import CamWindow
+from windows.lcdtest.lcdtestwindow import LCDWindow
+from windows.kbtest.kbtestwindow import KBWindow
+from windows.camtest.camtestwindow import CamWindow
 
 # Important:
 # You need to run the following command to generate the ui_form.py file
 #     pyside6-uic form.ui -o ui_form.py, or
 #     pyside2-uic form.ui -o ui_form.py
-from testtool.form import Ui_MainWindow
+from form import Ui_MainWindow
 
 
 def info(key, data):
@@ -42,7 +40,8 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_kb.clicked.connect(lambda p: self.kbwindow())
         self.ui.pushButton_cm.clicked.connect(lambda p: self.camwindow())
         self.ui.pushButton_2.clicked.connect(lambda p: self.audiowindow())
-        self.specs = Specs().getSpecs()
+        specs = Specs()
+        self.specs = specs.getSpecs()
         self.useroutput()
 
     def infolist(self,output,key,l):

@@ -1,15 +1,14 @@
 import sys
 
 import numpy as np
-from PyQt6.QtCore import pyqtSlot
 from PySide6 import QtGui
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QApplication, QMainWindow,QPushButton
-from testtool.windows.camtest.video import VideoThread
+from windows.camtest.video import VideoThread
 import cv2
 
-from testtool.windows.camtest.camtest import Ui_MainWindow
+from windows.camtest.camtest import Ui_MainWindow
 
 class CamWindow(QMainWindow):
     def __init__(self):
@@ -62,7 +61,7 @@ class CamWindow(QMainWindow):
         self.thread.exit(0)
         event.accept()
 
-    @pyqtSlot(np.ndarray)
+    @Slot(np.ndarray)
     def update_image(self, cv_img):
         """Updates the image_label with a new opencv image"""
         qt_img = self.convert_cv_qt(cv_img)
