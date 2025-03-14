@@ -63,6 +63,8 @@ class MainWindow(QMainWindow):
         table.setHorizontalHeaderLabels(('Model', 'Size', 'Type'))
 
         for i,d in enumerate(disks):
+            if d.get_type() == 'LOOP':
+                continue
             s, u = d.get_size_in_hrf()
             table.setItem(i, 0, QTableWidgetItem(d.get_model()))
             table.setItem(i, 1, QTableWidgetItem(f"{s:.1f}  {u} "))
@@ -77,11 +79,12 @@ class MainWindow(QMainWindow):
         table = self.ui.batteryTable
         table.setRowCount(9)
         table.setColumnCount(len(batteries))
-        widgetdefaults(table)
 
         table.setHorizontalHeaderLabels(('Battery 1', 'Battery 2', 'Battery 3'))
         table.setVerticalHeaderLabels(('Charge', 'Health', 'Charge Full', 'Charge Full Design', 'Cycle Count', 'Voltage', 'Voltage Min', 'Manufacturer', 'Model'))
         order = ["capacity","health","charge_full","charge_full_design","cycle_count","voltage_now","voltage_min_design","manufacturer","model_name"]
+
+        widgetdefaults(table)
 
         for i,bat in enumerate(batteries):
             for o,item in enumerate(order):
