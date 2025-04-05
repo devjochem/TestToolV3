@@ -1,6 +1,7 @@
 # This Python file uses the following encoding: utf-8
+import sys
 
-from PySide6.QtWidgets import QMainWindow, QAbstractItemView, QTableWidgetItem
+from PySide6.QtWidgets import QMainWindow, QAbstractItemView, QTableWidgetItem, QApplication
 from lib.systemspecs import Specs
 from lib.batteryinfo import Info
 from windows.audiotest.audiotestwindow import AudioTest
@@ -125,3 +126,9 @@ class MainWindow(QMainWindow):
     def audiowindow(self):
         self.audioWindow = AudioTest()
         self.audioWindow.show()
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    w = MainWindow()
+    w.show()
+    sys.exit(app.exec())

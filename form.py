@@ -53,6 +53,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.pushButton_2)
 
+        self.batButton = QPushButton(self.centralwidget)
+        self.batButton.setObjectName(u"batButton")
+
+        self.verticalLayout.addWidget(self.batButton)
+
 
         self.gridLayout.addLayout(self.verticalLayout, 0, 0, 2, 1)
 
@@ -92,6 +97,7 @@ class Ui_MainWindow(object):
         self.pushButton_cm.setText(QCoreApplication.translate("MainWindow", u"Camera", None))
         self.pushButton_lcd.setText(QCoreApplication.translate("MainWindow", u"LCD", None))
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Sound", None))
+        self.batButton.setText(QCoreApplication.translate("MainWindow", u"Battery", None))
         self.userOutput.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
