@@ -1,4 +1,5 @@
 # This Python file uses the following encoding: utf-8
+import logging
 import sys
 
 from PySide6.QtWidgets import QMainWindow, QAbstractItemView, QTableWidgetItem, QApplication
@@ -9,11 +10,8 @@ from windows.audiotest.audiotestwindow import AudioTest
 from windows.lcdtest.lcdtestwindow import LCDWindow
 from windows.kbtest.kbtestwindow import KBWindow
 from windows.camtest.camtestwindow import CamWindow
+from windows.battest.battestwintest import BatWindow
 
-# Important:
-# You need to run the following command to generate the ui_form.py file
-#     pyside6-uic form.ui -o ui_form.py, or
-#     pyside2-uic form.ui -o ui_form.py
 from form import Ui_MainWindow
 
 
@@ -24,12 +22,10 @@ def info(key, data):
     info += "</span>"
     return info
 
-
 def widgetdefaults(w):
     w.setEditTriggers(QAbstractItemView.NoEditTriggers)
     #w.verticalHeader().setVisible(False)
     w.horizontalHeader().setStretchLastSection(True)
-
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -37,10 +33,19 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        logging.basicConfig(filename="AppLog.log",
+                            format='%(asctime)s - %(levelname)s - %(message)s',
+                            filemode='w')
+        log = logging.getLogger()
+        log.setLevel(logging.INFO)
+
+
         self.ui.pushButton_lcd.clicked.connect(lambda p: self.lcdwindow())
         self.ui.pushButton_kb.clicked.connect(lambda p: self.kbwindow())
         self.ui.pushButton_cm.clicked.connect(lambda p: self.camwindow())
-        self.ui.pushButton_2.clicked.connect(lambda p: self.audiowindow())
+        self.ui.pushButton_2.clicked.connect(lambda p: AudioTest().show())
+        self.ui.batButton.clicked.connect(lambda p: BatWindow().show())
+        log.info("TestTool started")
         specs = Specs()
         self.specs = specs.getSpecs()
         self.useroutput()
@@ -122,10 +127,6 @@ class MainWindow(QMainWindow):
     def camwindow(self):
         self.camWindow = CamWindow()
         self.camWindow.show()
-
-    def audiowindow(self):
-        self.audioWindow = AudioTest()
-        self.audioWindow.show()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

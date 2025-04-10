@@ -7,4 +7,4 @@ class BatData:
         self.info = Info().getInfo()[bat]
 
     def getdata(self):
-        return self.data
+        return self.info

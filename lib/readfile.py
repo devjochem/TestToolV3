@@ -1,3 +1,6 @@
+import logging
+
+
 class ReadFile:
 
     def __init__(self, file):
@@ -6,7 +9,9 @@ class ReadFile:
             self.data = file.read()
             file.close()
         except (IOError, OSError) as e:
-            print(f"File {file} not found!")
+            log = logging.getLogger()
+            log.setLevel(logging.INFO)
+            log.warning(f"File {file} not found!")
             self.data = ""
 
     def getdata(self):
