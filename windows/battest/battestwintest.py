@@ -1,10 +1,11 @@
 import logging
 
-from PySide6.QtWidgets import QMainWindow
-from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QMainWindow, QErrorMessage
+from PySide6.QtCore import QTimer, QThreadPool
 import pyqtgraph as pg
 
 from lib.batteryinfo import Info
+from lib.stress import Worker
 from lib.timeaxisitem import TimeAxisItem, timestamp
 from windows.battest.battest import Ui_MainWindow
 from windows.battest.dataviewer.dataviewerwin import DataWindow
@@ -14,18 +15,20 @@ class BatWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.threadpool = None
+        self.job = None
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
         self.log = logging.getLogger()
-
         self.batlog = logging.getLogger(__name__)
         console_handler = logging.StreamHandler()
-        file_handler = logging.FileHandler("batterytest.log", encoding="utf-8")
+        file_handler = logging.FileHandler("batterytest" + str(timestamp()) + ".log", encoding="utf-8")
         formatter = logging.Formatter(
             "{asctime} - {message}",
             style="{",
             datefmt="%Y-%m-%d %H:%M:%S",)
+
         self.batlog.addHandler(console_handler)
         self.batlog.addHandler(file_handler)
         file_handler.setFormatter(formatter)
@@ -46,17 +49,17 @@ class BatWindow(QMainWindow):
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_plot_data)
         self.ui.startButton.clicked.connect(lambda p: self.start_plot())
-        self.ui.stopButton.clicked.connect(lambda p: self.timer.stop())
-        self.dataWindow = DataWindow()
-        self.ui.logviewButton.clicked.connect(lambda p: self.dataWindow.show())
+        self.ui.stopButton.clicked.connect(lambda p: self.end_plot())
+        self.ui.logviewButton.clicked.connect(lambda p: DataWindow().show())
         self.bats = {}
         colors = [(255,0,0),(0,255,0),(0,255,255)]
 
         for i,b in enumerate(Info().getInfo()):
             pen = pg.mkPen(color=colors[i])
             data = {'x': [], 'y': []}
-            self.bats['BAT' + str(i)] = data
-            self.bats['BAT' + str(i)]['pen'] = self.graphWidget.plot(self.bats['BAT' + str(i)]['x'], self.bats['BAT' + str(i)]['y'], pen=pen, name="BAT" + str(i))
+            batname = 'BAT' + str(i)
+            self.bats[batname] = data
+            self.bats[batname]['pen'] = self.graphWidget.plot(self.bats[batname]['x'], self.bats[batname]['y'], pen=pen, name=batname)
 
         self.ui.batteriesInfo.setText(str(len(Info().getInfo())))
 
@@ -66,27 +69,39 @@ class BatWindow(QMainWindow):
         if rate.isdigit():
             if len(self.bats) < 1:
                 self.log.error('No batteries found!')
+                self.job = Worker()
+                self.threadpool = QThreadPool()
+                self.threadpool.start(self.job)
                 return
             self.timer.start(int(rate) * 1000)
+            self.job = Worker()
+            self.threadpool = QThreadPool()
+            self.threadpool.start(self.job)
         else:
-            self.log.error('Rate not an integer!')
+            error = 'Rate not an integer!'
+            self.log.error(error)
             return
 
     def update_plot_data(self):
         #Get current batteries states
         batteries = Info().getInfo()
-        for i,b in enumerate(batteries):
+        for b in batteries:
             battery = self.bats[b]
             x = battery['x']
             y = battery['y']
-            time = timestamp()
-            cap = int(batteries['BAT' + str(i)]['capacity'])
+            cap = int(batteries[b]['capacity'])
 
-            x.append(time)
+            #set plot data
+            x.append(timestamp())
             y.append(cap)
             battery['pen'].setData(x, y)
-
-            self.batlog.info('BAT' + str(i) + " - " + str(cap))
+            #log battery cap
+            self.batlog.info(b + " - " + str(cap))
 
     def closeEvent(self, event):
+        self.end_plot()
+
+    def end_plot(self):
         self.timer.stop()
+        if self.job is not None:
+            self.job.kill()
