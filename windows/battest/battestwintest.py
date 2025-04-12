@@ -7,6 +7,7 @@ import pyqtgraph as pg
 from lib.batteryinfo import Info
 from lib.timeaxisitem import TimeAxisItem, timestamp
 from windows.battest.battest import Ui_MainWindow
+from windows.battest.dataviewer.dataviewerwin import DataWindow
 
 
 class BatWindow(QMainWindow):
@@ -46,6 +47,8 @@ class BatWindow(QMainWindow):
         self.timer.timeout.connect(self.update_plot_data)
         self.ui.startButton.clicked.connect(lambda p: self.start_plot())
         self.ui.stopButton.clicked.connect(lambda p: self.timer.stop())
+        self.dataWindow = DataWindow()
+        self.ui.logviewButton.clicked.connect(lambda p: self.dataWindow.show())
         self.bats = {}
         colors = [(255,0,0),(0,255,0),(0,255,255)]
 

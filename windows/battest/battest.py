@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(863, 391)
+        MainWindow.resize(863, 412)
         self.actionExport = QAction(MainWindow)
         self.actionExport.setObjectName(u"actionExport")
         self.actionImport = QAction(MainWindow)
@@ -68,6 +68,11 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.startButton, 2, 0, 1, 1)
 
+        self.logviewButton = QPushButton(self.centralwidget)
+        self.logviewButton.setObjectName(u"logviewButton")
+
+        self.gridLayout.addWidget(self.logviewButton, 2, 1, 1, 1)
+
 
         self.horizontalLayout.addLayout(self.gridLayout)
 
@@ -97,5 +102,6 @@ class Ui_MainWindow(object):
         self.rateInfo.setText(QCoreApplication.translate("MainWindow", u"10", None))
         self.stopButton.setText(QCoreApplication.translate("MainWindow", u"End Test", None))
         self.startButton.setText(QCoreApplication.translate("MainWindow", u"Start Test", None))
+        self.logviewButton.setText(QCoreApplication.translate("MainWindow", u"Log Viewer", None))
     # retranslateUi
 
