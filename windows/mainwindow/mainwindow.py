@@ -12,7 +12,7 @@ from windows.kbtest.kbtestwindow import KBWindow
 from windows.camtest.camtestwindow import CamWindow
 from windows.battest.battestwintest import BatWindow
 
-from form import Ui_MainWindow
+from windows.mainwindow.form import Ui_MainWindow
 
 
 def info(key, data):
@@ -33,7 +33,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        logging.basicConfig(filename="AppLog.log",
+        logging.basicConfig(filename="../../AppLog.log",
                             format='%(asctime)s - %(levelname)s - %(message)s',
                             filemode='w')
         log = logging.getLogger()
@@ -69,7 +69,7 @@ class MainWindow(QMainWindow):
         table.setHorizontalHeaderLabels(('Model', 'Size', 'Type'))
 
         for i,d in enumerate(disks):
-            if d.get_type() == 'LOOP':
+            if d.get_type_str() == 'LOOP':
                 continue
             s, u = d.get_size_in_hrf()
             table.setItem(i, 0, QTableWidgetItem(d.get_model()))

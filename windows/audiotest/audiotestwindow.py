@@ -7,6 +7,8 @@ from PySide6.QtWidgets import QApplication, QMainWindow
 from windows.audiotest.audiotest import Ui_MainWindow
 from windows.audiotest.renderarea import RenderArea, AudioInfo
 
+import vlc
+
 
 class AudioTest(QMainWindow):
 
@@ -37,7 +39,7 @@ class AudioTest(QMainWindow):
 
     def initialize_audio(self, channel):
         self.m_format = QAudioFormat()
-        self.m_format.setSampleRate(44100)
+        self.m_format.setSampleRate(48000)
         self.m_format.setChannelCount(1)
         self.m_format.setSampleFormat(QAudioFormat.SampleFormat.Int16)
 
@@ -52,6 +54,7 @@ class AudioTest(QMainWindow):
         soundFile.open(QIODevice.OpenModeFlag.ReadOnly, )
         self.m_audioSink.start(soundFile)
         #self.ui.ma_volume_slider.setValue(self.m_audioSink.volume() * 100)
+        #self.ui.ma_volume_slider.setValue(self.m_audioSink. * 100)
 
 
     def setup_mic(self):

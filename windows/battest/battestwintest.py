@@ -69,9 +69,6 @@ class BatWindow(QMainWindow):
         if rate.isdigit():
             if len(self.bats) < 1:
                 self.log.error('No batteries found!')
-                self.job = Worker()
-                self.threadpool = QThreadPool()
-                self.threadpool.start(self.job)
                 return
             self.timer.start(int(rate) * 1000)
             self.job = Worker()
