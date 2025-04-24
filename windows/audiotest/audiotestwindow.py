@@ -1,11 +1,15 @@
+import logging
 import sys
 
-from PySide6.QtCore import Slot, QByteArray, qWarning, QFile, QIODevice
+from PySide6.QtCore import Slot, QByteArray, qWarning, QFile, QIODevice, QBuffer
 from PySide6.QtMultimedia import QAudioDevice, QAudioFormat, QAudioSource, QAudio, QMediaDevices, QAudioSink
 from PySide6.QtWidgets import QApplication, QMainWindow
 
 from windows.audiotest.audiotest import Ui_MainWindow
 from windows.audiotest.renderarea import RenderArea, AudioInfo
+
+import wave
+import numpy as np
 
 
 
@@ -15,11 +19,19 @@ class AudioTest(QMainWindow):
         super().__init__(parent)
         self.m_devices = QMediaDevices(self)
         self.m_device = self.m_devices.defaultAudioOutput()
+        self.audio_buffer = QBuffer()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         QApplication.instance().installEventFilter(self)
         self.setup_mic()
         self.setup_out()
+        self.log = logging.getLogger()
+
+
+        self.m_format = QAudioFormat()
+        self.m_format.setSampleRate(44100)
+        self.m_format.setChannelCount(2)
+        self.m_format.setSampleFormat(QAudioFormat.SampleFormat.Int16)
 
     def setup_out(self):
         default_device_info = QMediaDevices.defaultAudioOutput()
@@ -33,28 +45,62 @@ class AudioTest(QMainWindow):
                 self.ui.comboBox_2.addItem(device_info.description(), device_info)
 
         self.ui.ma_volume_slider.valueChanged.connect(self.volume_changed)
-        self.ui.pushButton.clicked.connect(lambda p: self.initialize_audio('Left'))
-        self.ui.pushButton_2.clicked.connect(lambda p: self.initialize_audio('Right'))
+        self.ui.pushButton.clicked.connect(lambda p: self.load_audio_file(f"/usr/share/sounds/alsa/Front_Left.wav"))
+        self.ui.pushButton_2.clicked.connect(lambda p: self.load_audio_file(f"/usr/share/sounds/alsa/Front_Right.wav"))
 
-    def initialize_audio(self, channel):
-        self.m_format = QAudioFormat()
-        self.m_format.setSampleRate(48000)
-        self.m_format.setChannelCount(1)
-        self.m_format.setSampleFormat(QAudioFormat.SampleFormat.Int16)
+    def load_audio_file(self, file_path):
+        try:
+            with wave.open(file_path, 'rb') as wav_file:
+                # Check if the file is compatible
+                if wav_file.getnchannels() not in [1, 2]:
+                    raise ValueError("Only mono or stereo files supported")
+                if wav_file.getsampwidth() != 2:
+                    raise ValueError("Only 16-bit files supported")
 
-        info = self.m_devices.audioOutputs()[0]
-        if not info.isFormatSupported(self.m_format):
-            qWarning("Default format not supported - trying to use nearest")
-            self.m_format = info.nearestFormat(self.m_format)
+                    # Read all frames
+                frames = wav_file.readframes(wav_file.getnframes())
 
+                    # Convert to numpy array
+                dtype = np.int16
+                if wav_file.getnchannels() == 2:
+                    self.audio_data = np.frombuffer(frames, dtype=dtype).reshape(-1, 2)
+                else:
+                    # Convert mono to stereo by duplicating channel
+                    mono_data = np.frombuffer(frames, dtype=dtype)
+                    self.audio_data = np.column_stack((mono_data, mono_data))
+                if 'Right' in file_path:
+                    self.play_audio(1.0)
+                elif 'Left' in file_path:
+                    self.play_audio(-1.0)
+        except Exception as e:
+            self.log.error(f"Error loading file: {e}")
+
+    def play_audio(self, balance):
+        if self.audio_data is None:
+            return
+
+        # Apply balance
+        left_gain = 1.0 - max(0, balance)
+        right_gain = 1.0 + min(0, balance)
+
+        processed_data = self.audio_data.copy()
+        processed_data[:, 0] = (processed_data[:, 0] * left_gain).clip(-32768, 32767).astype(np.int16)
+        processed_data[:, 1] = (processed_data[:, 1] * right_gain).clip(-32768, 32767).astype(np.int16)
+
+        # Convert to bytes
+        byte_data = processed_data.tobytes()
         self.m_audioSink = QAudioSink(self.m_device, self.m_format)
-        soundFile= QFile()
-        soundFile.setFileName(f"/usr/share/sounds/alsa/Front_{channel}.wav")
-        soundFile.open(QIODevice.OpenModeFlag.ReadOnly, )
-        self.m_audioSink.start(soundFile)
-        #self.ui.ma_volume_slider.setValue(self.m_audioSink.volume() * 100)
-        #self.ui.ma_volume_slider.setValue(self.m_audioSink. * 100)
+        # Stop any current playback
+        self.m_audioSink.stop()
+        self.audio_buffer.close()
 
+        # Set up new buffer
+        self.audio_buffer.setData(QByteArray(byte_data))
+        self.audio_buffer.open(QIODevice.OpenModeFlag.ReadOnly)
+        self.audio_buffer.seek(0)
+
+        # Start playback
+        self.m_audioSink.start(self.audio_buffer)
 
     def setup_mic(self):
         self.m_canvas = RenderArea(self)

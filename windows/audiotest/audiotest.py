@@ -35,43 +35,21 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addWidget(self.comboBox_2, 0, 1, 1, 1)
 
+        self.label_3 = QLabel(self.centralwidget)
+        self.label_3.setObjectName(u"label_3")
+
+        self.gridLayout_3.addWidget(self.label_3, 1, 0, 1, 1)
+
         self.ma_volume_slider = QSlider(self.centralwidget)
         self.ma_volume_slider.setObjectName(u"ma_volume_slider")
         self.ma_volume_slider.setOrientation(Qt.Orientation.Horizontal)
 
         self.gridLayout_3.addWidget(self.ma_volume_slider, 1, 1, 1, 1)
 
-        self.l_volume_slider = QSlider(self.centralwidget)
-        self.l_volume_slider.setObjectName(u"l_volume_slider")
-        self.l_volume_slider.setOrientation(Qt.Orientation.Horizontal)
-
-        self.gridLayout_3.addWidget(self.l_volume_slider, 2, 1, 1, 1)
-
         self.label_2 = QLabel(self.centralwidget)
         self.label_2.setObjectName(u"label_2")
 
         self.gridLayout_3.addWidget(self.label_2, 0, 0, 1, 1)
-
-        self.r_volume_slider = QSlider(self.centralwidget)
-        self.r_volume_slider.setObjectName(u"r_volume_slider")
-        self.r_volume_slider.setOrientation(Qt.Orientation.Horizontal)
-
-        self.gridLayout_3.addWidget(self.r_volume_slider, 3, 1, 1, 1)
-
-        self.label_3 = QLabel(self.centralwidget)
-        self.label_3.setObjectName(u"label_3")
-
-        self.gridLayout_3.addWidget(self.label_3, 1, 0, 1, 1)
-
-        self.label_4 = QLabel(self.centralwidget)
-        self.label_4.setObjectName(u"label_4")
-
-        self.gridLayout_3.addWidget(self.label_4, 2, 0, 1, 1)
-
-        self.label_5 = QLabel(self.centralwidget)
-        self.label_5.setObjectName(u"label_5")
-
-        self.gridLayout_3.addWidget(self.label_5, 3, 0, 1, 1)
 
 
         self.gridLayout.addLayout(self.gridLayout_3, 0, 1, 1, 1)
@@ -126,10 +104,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"AudioTest", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Speaker", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Master:", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Left", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Right", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Speaker", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Microphone", None))
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Test Left", None))
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Test Right", None))

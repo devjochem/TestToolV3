@@ -37,8 +37,12 @@ class TableModel(QAbstractTableModel):
         elif orientation == Qt.Horizontal and role == Qt.DisplayRole:
             return "BAT" + str(col)
     def rowCount(self, index):
+        if self._data[0] is None:
+            return 0
         return len(self._data[0])
     def columnCount(self, index):
+        if self._data[0] is None:
+            return 0
         return len(self._data)
 
 class BatWidget(QTableView):
@@ -47,9 +51,11 @@ class BatWidget(QTableView):
 
         self.model = TableModel()
         self.setModel(self.model)
-        timer = QTimer(self)
-        timer.timeout.connect(self.show_data)
-        timer.start(2000)
+
+        if self.model.hasIndex(0,0):
+            self.timer = QTimer(self)
+            self.timer.timeout.connect(self.show_data)
+            self.timer.start(2000)
 
     def show_data(self):
         self.model = TableModel()
