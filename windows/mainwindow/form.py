@@ -20,6 +20,8 @@ from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QLayout,
     QStatusBar, QTableWidget, QTableWidgetItem, QTextEdit,
     QVBoxLayout, QWidget)
 
+from widgets.BatteryWidget import BatWidget
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
@@ -67,7 +69,7 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.userOutput, 0, 1, 1, 1)
 
-        self.batteryTable = QTableWidget(self.centralwidget)
+        self.batteryTable = BatWidget(self.centralwidget)
         self.batteryTable.setObjectName(u"batteryTable")
 
         self.gridLayout.addWidget(self.batteryTable, 1, 1, 1, 2)
@@ -77,10 +79,15 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.diskTable, 0, 2, 1, 1)
 
+        self.gridLayout.setRowStretch(0, 3)
+        self.gridLayout.setRowStretch(1, 4)
+        self.gridLayout.setColumnStretch(0, 1)
+        self.gridLayout.setColumnStretch(1, 10)
+        self.gridLayout.setColumnStretch(2, 10)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1197, 30))
+        self.menubar.setGeometry(QRect(0, 0, 1197, 24))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -104,7 +111,7 @@ class Ui_MainWindow(object):
 "hr { height: 1px; border-width: 0; }\n"
 "li.unchecked::marker { content: \"\\2610\"; }\n"
 "li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
+"</style></head><body style=\" font-family:'Adwaita Sans'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Noto Sans'; font-size:10pt;\"><br /></p></body></html>", None))
     # retranslateUi
 

@@ -1,6 +1,5 @@
 import logging
 
-
 class ReadFile:
 
     def __init__(self, file):

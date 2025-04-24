@@ -7,7 +7,6 @@ from PySide6.QtWidgets import QApplication, QMainWindow
 from windows.audiotest.audiotest import Ui_MainWindow
 from windows.audiotest.renderarea import RenderArea, AudioInfo
 
-import vlc
 
 
 class AudioTest(QMainWindow):

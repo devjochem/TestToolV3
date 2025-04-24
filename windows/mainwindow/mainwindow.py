@@ -4,7 +4,6 @@ import sys
 
 from PySide6.QtWidgets import QMainWindow, QAbstractItemView, QTableWidgetItem, QApplication
 from lib.systemspecs import Specs
-from lib.batteryinfo import Info
 from windows.audiotest.audiotestwindow import AudioTest
 
 from windows.lcdtest.lcdtestwindow import LCDWindow
@@ -77,26 +76,6 @@ class MainWindow(QMainWindow):
             table.setItem(i, 2, QTableWidgetItem(d.get_type_str()))
         table.resizeColumnsToContents()
 
-    def populate_bat(self):
-        batteries = Info().getInfo()
-        if len(batteries) == 0:
-            return
-        #table = self.getTable("batteryTable", 11, len(batteries))
-        table = self.ui.batteryTable
-        table.setRowCount(9)
-        table.setColumnCount(len(batteries))
-
-        table.setHorizontalHeaderLabels(('Battery 1', 'Battery 2', 'Battery 3'))
-        table.setVerticalHeaderLabels(('Charge', 'Health', 'Charge Full', 'Charge Full Design', 'Cycle Count', 'Voltage', 'Voltage Min', 'Manufacturer', 'Model'))
-        order = ["capacity","health","charge_full","charge_full_design","cycle_count","voltage_now","voltage_min_design","manufacturer","model_name"]
-
-        widgetdefaults(table)
-
-        for i,bat in enumerate(batteries):
-            for o,item in enumerate(order):
-                table.setItem(o, i, QTableWidgetItem(str(batteries[bat][item])))
-        table.resizeColumnsToContents()
-
     def useroutput(self):
         self.text = self.ui.userOutput
         title = "<span style=\" font-size:32pt; font-weight:600;\" > System Info </span>"
@@ -110,7 +89,6 @@ class MainWindow(QMainWindow):
         gpus = self.specs["gpu"]
         self.infolist(self.text,"GPU(S)",gpus)
         self.populate_disks()
-        self.populate_bat()
         #self.text.append(f'   {self.specs["cpu"]}')
         return self.text
 

@@ -4,9 +4,6 @@ import subprocess
 
 from PySide6.QtCore import QRunnable, Slot
 
-
-#subprocess.Popen(['stress', '-ng'])
-
 class Worker(QRunnable):
     """Worker thread."""
 

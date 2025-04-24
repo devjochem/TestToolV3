@@ -4,12 +4,22 @@ from PySide6.QtWidgets import QMainWindow, QErrorMessage
 from PySide6.QtCore import QTimer, QThreadPool
 import pyqtgraph as pg
 
-from lib.batteryinfo import Info
+from lib.batteryinfo import UPowerManager
 from lib.stress import Worker
 from lib.timeaxisitem import TimeAxisItem, timestamp
 from windows.battest.battest import Ui_MainWindow
 from windows.battest.dataviewer.dataviewerwin import DataWindow
 
+def get_data():
+    upower = UPowerManager()
+    devices = upower.enumerate_devices()
+    result = {}
+
+    for device in devices:
+        if "battery" in device.lower():
+            bats = upower.print_battery_info(device)
+            result[device] = bats['Percentage']
+    return result
 
 class BatWindow(QMainWindow):
 
@@ -54,14 +64,15 @@ class BatWindow(QMainWindow):
         self.bats = {}
         colors = [(255,0,0),(0,255,0),(0,255,255)]
 
-        for i,b in enumerate(Info().getInfo()):
-            pen = pg.mkPen(color=colors[i])
-            data = {'x': [], 'y': []}
-            batname = 'BAT' + str(i)
-            self.bats[batname] = data
-            self.bats[batname]['pen'] = self.graphWidget.plot(self.bats[batname]['x'], self.bats[batname]['y'], pen=pen, name=batname)
-
-        self.ui.batteriesInfo.setText(str(len(Info().getInfo())))
+        for i,device in enumerate(get_data()):
+            if "battery" in device.lower():
+                print(device)
+                pen = pg.mkPen(color=colors[i])
+                data = {'x': [], 'y': []}
+                batname = device
+                self.bats[batname] = data
+                self.bats[batname]['pen'] = self.graphWidget.plot(self.bats[batname]['x'], self.bats[batname]['y'], pen=pen, name=batname)
+        self.ui.batteriesInfo.setText(str(len(get_data())))
 
     def start_plot(self):
         rate = self.ui.rateInfo.text()
@@ -81,12 +92,12 @@ class BatWindow(QMainWindow):
 
     def update_plot_data(self):
         #Get current batteries states
-        batteries = Info().getInfo()
+        batteries = get_data()
         for b in batteries:
             battery = self.bats[b]
             x = battery['x']
             y = battery['y']
-            cap = int(batteries[b]['capacity'])
+            cap = float(str(batteries[b]).replace("%", ""))
 
             #set plot data
             x.append(timestamp())
