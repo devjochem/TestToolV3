@@ -1,5 +1,5 @@
 from PySide6.QtCore import QAbstractTableModel, Qt, QTimer
-from PySide6.QtWidgets import QTableView
+from PySide6.QtWidgets import QTableView, QTableWidgetItem, QWidget, QTableWidget
 
 from lib.batteryinfo import UPowerManager
 
@@ -45,17 +45,25 @@ class TableModel(QAbstractTableModel):
             return 0
         return len(self._data)
 
-class BatWidget(QTableView):
+class BatWidget(QTableWidget):
     def __init__(self, parent):
         super().__init__(parent=parent)
+
+        data = getData()
+
+        if not data[0]:
+            self.setRowCount(1)
+            self.setColumnCount(1)
+            self.setItem(0, 0, QTableWidgetItem("No Batteries found!"))
+            self.resizeColumnsToContents()
+            return
 
         self.model = TableModel()
         self.setModel(self.model)
 
-        if self.model.hasIndex(0,0):
-            self.timer = QTimer(self)
-            self.timer.timeout.connect(self.show_data)
-            self.timer.start(2000)
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.show_data)
+        self.timer.start(2000)
 
     def show_data(self):
         self.model = TableModel()
