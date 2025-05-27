@@ -21,18 +21,13 @@ def info(key, data):
     info += "</span>"
     return info
 
-def widgetdefaults(w):
-    w.setEditTriggers(QAbstractItemView.NoEditTriggers)
-    #w.verticalHeader().setVisible(False)
-    w.horizontalHeader().setStretchLastSection(True)
-
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        logging.basicConfig(filename="../../AppLog.log",
+        logging.basicConfig(filename="./AppLog.log",
                             format='%(asctime)s - %(levelname)s - %(message)s',
                             filemode='w')
         log = logging.getLogger()
@@ -64,7 +59,9 @@ class MainWindow(QMainWindow):
         table.verticalHeader().setVisible(False)
         table.setRowCount(len(disks))
         table.setColumnCount(3)
-        widgetdefaults(table)
+        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        # w.verticalHeader().setVisible(False)
+        table.horizontalHeader().setStretchLastSection(True)
         table.setHorizontalHeaderLabels(('Model', 'Size', 'Type'))
 
         for i,d in enumerate(disks):

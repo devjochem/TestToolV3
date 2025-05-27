@@ -1,70 +1,75 @@
 from PySide6.QtCore import QAbstractTableModel, Qt, QTimer
-from PySide6.QtWidgets import QTableView, QTableWidgetItem, QWidget, QTableWidget
-
+from PySide6.QtWidgets import QTableView, QWidget, QVBoxLayout, QApplication
 from lib.batteryinfo import UPowerManager
 
 def getData():
     upower = UPowerManager()
     devices = upower.enumerate_devices()
-    headers = []
-    table = []
-    data = None
+    battery_data = {}
 
     for device in devices:
         if "battery" in device.lower():
-            bats = upower.print_battery_info(device)
-            data = []
-            for key in bats:
-                if len(headers) != len(bats):
-                    headers.append(key)
-                data.append(bats[key])
-    table += [data]
+            info = upower.print_battery_info(device)
+            battery_data[device] = info
 
-    return headers, table
+    if not battery_data:
+        return [], []
+
+    # Use keys from first battery as row labels
+    row_labels = list(next(iter(battery_data.values())).keys())
+    column_headers = list(battery_data.keys())
+
+    print(row_labels)
+    print(column_headers)
+
+    # Each row is a battery property (e.g., state), values go across batteries
+    table = []
+    for row_label in row_labels:
+        row = [battery_data[dev][row_label] for dev in column_headers]
+        table.append(row)
+
+    return column_headers, table, row_labels
+
 
 class TableModel(QAbstractTableModel):
     def __init__(self):
         super().__init__()
-        self._headers ,self._data = getData()
+        self._headers, self._data, self._row_labels = getData()
+
+    def rowCount(self, index):
+        return len(self._row_labels)
+
+    def columnCount(self, index):
+        return len(self._headers)
 
     def data(self, index, role):
         if role == Qt.DisplayRole:
-            return self._data[index.column()][index.row()]
+            return self._data[index.row()][index.column()]
 
-    def headerData(self, col, orientation, role):
-        if orientation == Qt.Vertical and role == Qt.DisplayRole:
-            return self._headers[col]
-        elif orientation == Qt.Horizontal and role == Qt.DisplayRole:
-            return "BAT" + str(col)
-    def rowCount(self, index):
-        if self._data[0] is None:
-            return 0
-        return len(self._data[0])
-    def columnCount(self, index):
-        if self._data[0] is None:
-            return 0
-        return len(self._data)
+    def headerData(self, section, orientation, role):
+        if role != Qt.DisplayRole:
+            return None
+        if orientation == Qt.Horizontal:
+            return self._headers[section].split('/')[-1]  # just device name
+        else:
+            return self._row_labels[section]
 
-class BatWidget(QTableWidget):
-    def __init__(self, parent):
-        super().__init__(parent=parent)
+class BatWidget(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
-        data = getData()
-
-        if not data[0]:
-            self.setRowCount(1)
-            self.setColumnCount(1)
-            self.setItem(0, 0, QTableWidgetItem("No Batteries found!"))
-            self.resizeColumnsToContents()
-            return
-
+        self.view = QTableView()
         self.model = TableModel()
-        self.setModel(self.model)
+        self.view.setModel(self.model)
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.view)
+        self.setLayout(layout)
 
         self.timer = QTimer(self)
-        self.timer.timeout.connect(self.show_data)
+        self.timer.timeout.connect(self.refresh_data)
         self.timer.start(2000)
 
-    def show_data(self):
+    def refresh_data(self):
         self.model = TableModel()
-        self.setModel(self.model)
+        self.view.setModel(self.model)
