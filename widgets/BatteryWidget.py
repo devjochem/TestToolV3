@@ -13,7 +13,7 @@ def getData():
             battery_data[device] = info
 
     if not battery_data:
-        return [], []
+        return [], [], []
 
     # Use keys from first battery as row labels
     row_labels = list(next(iter(battery_data.values())).keys())
