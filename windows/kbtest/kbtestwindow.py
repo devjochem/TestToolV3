@@ -8,6 +8,8 @@ from Xlib.ext import record
 from Xlib.protocol import rq
 from threading import Thread
 
+import keymap
+from windows.kbtest import key
 from windows.kbtest.kbtest import Ui_MainWindow
 
 
@@ -21,8 +23,7 @@ class KBWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        with open("x11_all_keysyms.json", "r") as f:
-            self.keymap = json.load(f)
+        self.keymap = key.KEY_MAP
 
         self.d = display.Display()
         self.emitter = KeyEventEmitter()
