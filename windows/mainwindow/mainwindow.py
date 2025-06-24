@@ -1,8 +1,17 @@
 # This Python file uses the following encoding: utf-8
 import logging
+import os
+import shutil
+import subprocess
 import sys
+import tempfile
+import time
+from subprocess import Popen
 
+import requests
+from packaging import version
 from PySide6.QtWidgets import QMainWindow, QAbstractItemView, QTableWidgetItem, QApplication
+
 from lib.systemspecs import Specs
 from windows.audiotest.audiotestwindow import AudioTest
 
@@ -12,6 +21,71 @@ from windows.camtest.camtestwindow import CamWindow
 from windows.battest.battestwintest import BatWindow
 
 from windows.mainwindow.form import Ui_MainWindow
+
+
+
+__version__ = "1.0.0"
+GITHUB_REPO = "devjochem/TestToolV3"
+ASSET_MATCH = "TestTool"
+
+
+def get_latest_release(repo):
+    r = requests.get(f"https://api.github.com/repos/{repo}/releases/latest")
+    r.raise_for_status()
+    return r.json()
+
+def download_asset(asset_url):
+    headers = {'Accept': 'application/octet-stream'}
+    r = requests.get(asset_url, headers=headers, stream=True)
+    r.raise_for_status()
+
+    fd, tmp_path = tempfile.mkstemp()
+    with os.fdopen(fd, 'wb') as f:
+        shutil.copyfileobj(r.raw, f)
+    os.chmod(tmp_path, 0o755)
+    return tmp_path
+
+def launch_delayed_replacement(old_path, new_path):
+    """
+    Launch a stub process that waits for the current process to exit,
+    replaces the old binary, and restarts it.
+    """
+    stub_code = f"""
+import os, sys, time, shutil
+time.sleep(2)
+try:
+    shutil.copy2(r"{new_path}", r"{old_path}")
+    os.execv(r"{old_path}", [r"{old_path}"])
+except Exception as e:
+    print("Self-update failed:", e)
+    sys.exit(1)
+"""
+    stub_file = tempfile.NamedTemporaryFile("w", delete=False, suffix=".py")
+    stub_file.write(stub_code)
+    stub_file.close()
+
+    # Launch stub with the system Python executable
+    subprocess.Popen([sys.executable, stub_file.name])
+    print("Launched update stub. Exiting to complete update.")
+    sys.exit(0)
+
+def self_update():
+    print(f"Current version: {__version__}")
+    release = get_latest_release(GITHUB_REPO)
+    latest_version = release["tag_name"].lstrip("v")
+
+    if version.parse(latest_version) <= version.parse(__version__):
+        print("Already up to date.")
+        return
+
+    print(f"New version available: {latest_version}")
+    for asset in release["assets"]:
+        if ASSET_MATCH in asset["name"]:
+            print(f"Downloading asset: {asset['name']}")
+            new_binary = download_asset(asset["url"])
+            current_binary = sys.executable
+            print(f"Preparing to update: {current_binary}")
+            launch_delayed_replacement(current_binary, new_binary)
 
 
 def info(key, data):
@@ -39,6 +113,7 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_cm.clicked.connect(lambda p: self.camwindow())
         self.ui.pushButton_2.clicked.connect(lambda p: AudioTest().show())
         self.ui.batButton.clicked.connect(lambda p: BatWindow().show())
+        self.ui.actionUpdate.triggered.connect(lambda p: self_update())
         log.info("TestTool started")
         specs = Specs()
         self.specs = specs.getSpecs()
