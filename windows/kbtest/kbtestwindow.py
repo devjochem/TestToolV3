@@ -1,8 +1,18 @@
-from PySide6.QtGui import QKeyEvent
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel
-from windows.kbtest.key import Key, KEY_MAP
+
+import json
+from PySide6.QtWidgets import QApplication, QLabel, QMainWindow
+from PySide6.QtCore import Signal, QObject
+
+from Xlib import X, display
+from Xlib.ext import record
+from Xlib.protocol import rq
+from threading import Thread
 
 from windows.kbtest.kbtest import Ui_MainWindow
+
+
+class KeyEventEmitter(QObject):
+    key_event = Signal(str, str)
 
 class KBWindow(QMainWindow):
 
@@ -10,32 +20,86 @@ class KBWindow(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        with open("x11_all_keysyms.json", "r") as f:
+            self.keymap = json.load(f)
+
+        self.d = display.Display()
+        self.emitter = KeyEventEmitter()
         QApplication.instance().installEventFilter(self)
+        self.stop_recording_flag = False
+        self.ctx = None
 
-    def keyPressEvent(self, event):
-        if isinstance(event, QKeyEvent):
-            pkey = event.key()
-            #print(event.nativeScanCode())
-            self.setColor(pkey,"orange")
+        self.emitter.key_event.connect(self.on_key_event)
 
-    def keyReleaseEvent(self, event):
-        if isinstance(event, QKeyEvent):
-            pkey = event.key()
-            self.setColor(pkey,"green")
+        self.record_thread = Thread(target=self.start_recording, daemon=True)
+        self.record_thread.start()
 
-    def setColor(self, key, color):
+    def closeEvent(self, event):
+        self.d.record_disable_context(self.ctx)
+        self.d.flush()
+        super().closeEvent(event)
+
+    def start_recording(self):
+        d = display.Display()  # Open display in this thread
+        self.ctx = d.record_create_context(
+            0,
+            [record.AllClients],
+            [{
+                'core_requests': (0, 0),
+                'core_replies': (0, 0),
+                'ext_requests': (0, 0, 0, 0),
+                'ext_replies': (0, 0, 0, 0),
+                'delivered_events': (X.KeyPress, X.KeyRelease),
+                'device_events': (X.KeyPress, X.KeyRelease),
+                'errors': (0, 0),
+                'client_started': False,
+                'client_died': False,
+            }]
+        )
+
+        def _callback(reply):
+            if self.stop_recording_flag:
+                d.record_disable_context(self.ctx)
+                d.flush()
+                return
+            self.process_event(reply)
+
+        d.record_enable_context(self.ctx, _callback)
+        d.record_free_context(self.ctx)
+
+
+    def process_event(self, reply):
+        if reply.category != record.FromServer:
+            return
+        if reply.client_swapped:
+            return
+        data = reply.data
+        while len(data):
+            event, data = rq.EventField(None).parse_binary_value(data, self.d.display, None, None)
+            if event.type == X.KeyPress or event.type == X.KeyRelease:
+                event_type = "pressed" if event.type == X.KeyPress else "released"
+                keysym = self.d.keycode_to_keysym(event.detail, 0)
+                if keysym is None:
+                    key_name = "Unknown"
+                else:
+                    key_name = self.keymap.get(str(keysym), f"Unknown keysym {keysym}")
+                # Emit signal to update UI on the main thread
+                self.emitter.key_event.emit(key_name, event_type)
+
+    def on_key_event(self, key_name, event_type):
+        print(f"Key {event_type}: {key_name}")
+        self.setColor(event_type, key_name)
+
+
+    def setColor(self, event_type, key_name):
         try:
-            btn = KEY_MAP[key]
+            btn = "btn" + str(key_name).upper()
         except KeyError:
             return
-        if str(btn).startswith("Key.LEFT"):
-            self.findChild(QLabel, Key["RIGHT" + str(btn).split("Key.LEFT")[1]].value).setStyleSheet(
-                f"background-color: {color};  border: 1px solid black;")
-        self.findChild(QLabel, Key(btn).value).setStyleSheet(f"background-color: {color};  border: 1px solid black;")
-    def getKey(self, num):
-        try:
-            btn = KEY_MAP[num]
-        except KeyError:
-            return None
-        return self.findChild(QLabel, Key(btn).value)
-
+        match event_type:
+            case "pressed":
+                color = "orange"
+            case "released":
+                color = "green"
+        self.findChild(QLabel, btn).setStyleSheet(f"background-color: {color};  border: 1px solid black;")
