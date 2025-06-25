@@ -30,6 +30,8 @@ class Ui_MainWindow(object):
         MainWindow.resize(1197, 699)
         self.actionUpdate = QAction(MainWindow)
         self.actionUpdate.setObjectName(u"actionUpdate")
+        self.actionConsole = QAction(MainWindow)
+        self.actionConsole.setObjectName(u"actionConsole")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -100,6 +102,7 @@ class Ui_MainWindow(object):
 
         self.menubar.addAction(self.menuFile.menuAction())
         self.menuFile.addAction(self.actionUpdate)
+        self.menuFile.addAction(self.actionConsole)
 
         self.retranslateUi(MainWindow)
 
@@ -109,6 +112,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Jochems TestTool", None))
         self.actionUpdate.setText(QCoreApplication.translate("MainWindow", u"Update", None))
+        self.actionConsole.setText(QCoreApplication.translate("MainWindow", u"Console", None))
         self.pushButton_kb.setText(QCoreApplication.translate("MainWindow", u"Keyboard", None))
         self.pushButton_cm.setText(QCoreApplication.translate("MainWindow", u"Camera", None))
         self.pushButton_lcd.setText(QCoreApplication.translate("MainWindow", u"LCD", None))

@@ -14,6 +14,7 @@ from PySide6.QtWidgets import QMainWindow, QAbstractItemView, QTableWidgetItem, 
 
 from lib.systemspecs import Specs
 from windows.audiotest.audiotestwindow import AudioTest
+from windows.console.console import ConsoleWindow
 
 from windows.lcdtest.lcdtestwindow import LCDWindow
 from windows.kbtest.kbtestwindow import KBWindow
@@ -22,12 +23,9 @@ from windows.battest.battestwintest import BatWindow
 
 from windows.mainwindow.form import Ui_MainWindow
 
-
-
 __version__ = "1.0.0"
 GITHUB_REPO = "devjochem/TestToolV3"
 ASSET_MATCH = "TestTool"
-
 
 def get_latest_release(repo):
     r = requests.get(f"https://api.github.com/repos/{repo}/releases/latest")
@@ -113,7 +111,8 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_cm.clicked.connect(lambda p: self.camwindow())
         self.ui.pushButton_2.clicked.connect(lambda p: AudioTest().show())
         self.ui.batButton.clicked.connect(lambda p: BatWindow().show())
-        self.ui.actionUpdate.triggered.connect(lambda p: self_update())
+        #self.ui.actionUpdate.triggered.connect(lambda p: self_update())
+        self.ui.actionConsole.triggered.connect(lambda p: ConsoleWindow().show())
         log.info("TestTool started")
         specs = Specs()
         self.specs = specs.getSpecs()
@@ -164,6 +163,9 @@ class MainWindow(QMainWindow):
         #self.text.append(f'   {self.specs["cpu"]}')
         return self.text
 
+    def consolewindow(self):
+        self.consoleWindow = ConsoleWindow()
+        self.consoleWindow.show()
 
     def lcdwindow(self):
         self.lcdWindow = LCDWindow()

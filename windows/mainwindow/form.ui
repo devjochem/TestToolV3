@@ -99,6 +99,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <string>File</string>
     </property>
     <addaction name="actionUpdate"/>
+    <addaction name="actionConsole"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -106,6 +107,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <action name="actionUpdate">
    <property name="text">
     <string>Update</string>
+   </property>
+  </action>
+  <action name="actionConsole">
+   <property name="text">
+    <string>Console</string>
    </property>
   </action>
  </widget>

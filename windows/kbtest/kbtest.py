@@ -22,9 +22,9 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(993, 324)
-        MainWindow.setMinimumSize(QSize(993, 324))
-        MainWindow.setMaximumSize(QSize(993, 324))
+        MainWindow.resize(1280, 324)
+        MainWindow.setMinimumSize(QSize(1280, 324))
+        MainWindow.setMaximumSize(QSize(1280, 324))
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayoutWidget = QWidget(self.centralwidget)
@@ -756,6 +756,134 @@ class Ui_MainWindow(object):
         self.gridLayout_6.setColumnStretch(8, 10)
         self.gridLayout_6.setColumnStretch(9, 10)
         self.gridLayout_6.setColumnStretch(10, 10)
+        self.gridLayoutWidget = QWidget(self.centralwidget)
+        self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
+        self.gridLayoutWidget.setGeometry(QRect(1000, 50, 161, 51))
+        self.gridLayout_7 = QGridLayout(self.gridLayoutWidget)
+        self.gridLayout_7.setObjectName(u"gridLayout_7")
+        self.gridLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.btnKP_MULTIPLY = QLabel(self.gridLayoutWidget)
+        self.btnKP_MULTIPLY.setObjectName(u"btnKP_MULTIPLY")
+        self.btnKP_MULTIPLY.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_7.addWidget(self.btnKP_MULTIPLY, 0, 2, 1, 1)
+
+        self.btnKP_DIVIDE = QLabel(self.gridLayoutWidget)
+        self.btnKP_DIVIDE.setObjectName(u"btnKP_DIVIDE")
+        self.btnKP_DIVIDE.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_7.addWidget(self.btnKP_DIVIDE, 0, 1, 1, 1)
+
+        self.btnNUM_LOCK = QLabel(self.gridLayoutWidget)
+        self.btnNUM_LOCK.setObjectName(u"btnNUM_LOCK")
+        self.btnNUM_LOCK.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_7.addWidget(self.btnNUM_LOCK, 0, 0, 1, 1)
+
+        self.horizontalLayoutWidget_7 = QWidget(self.centralwidget)
+        self.horizontalLayoutWidget_7.setObjectName(u"horizontalLayoutWidget_7")
+        self.horizontalLayoutWidget_7.setGeometry(QRect(1000, 250, 161, 51))
+        self.gridLayout_12 = QGridLayout(self.horizontalLayoutWidget_7)
+        self.gridLayout_12.setObjectName(u"gridLayout_12")
+        self.gridLayout_12.setContentsMargins(0, 0, 0, 0)
+        self.btnKP_INSERT = QLabel(self.horizontalLayoutWidget_7)
+        self.btnKP_INSERT.setObjectName(u"btnKP_INSERT")
+        self.btnKP_INSERT.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_12.addWidget(self.btnKP_INSERT, 0, 0, 1, 1)
+
+        self.btnKP_DELETE = QLabel(self.horizontalLayoutWidget_7)
+        self.btnKP_DELETE.setObjectName(u"btnKP_DELETE")
+        self.btnKP_DELETE.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_12.addWidget(self.btnKP_DELETE, 0, 1, 1, 1)
+
+        self.gridLayout_12.setColumnStretch(0, 2)
+        self.gridLayout_12.setColumnStretch(1, 1)
+        self.gridLayoutWidget_2 = QWidget(self.centralwidget)
+        self.gridLayoutWidget_2.setObjectName(u"gridLayoutWidget_2")
+        self.gridLayoutWidget_2.setGeometry(QRect(1000, 199, 161, 51))
+        self.gridLayout_8 = QGridLayout(self.gridLayoutWidget_2)
+        self.gridLayout_8.setObjectName(u"gridLayout_8")
+        self.gridLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.btnKP_DOWN = QLabel(self.gridLayoutWidget_2)
+        self.btnKP_DOWN.setObjectName(u"btnKP_DOWN")
+        self.btnKP_DOWN.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_8.addWidget(self.btnKP_DOWN, 0, 1, 1, 1)
+
+        self.btnKP_END = QLabel(self.gridLayoutWidget_2)
+        self.btnKP_END.setObjectName(u"btnKP_END")
+        self.btnKP_END.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_8.addWidget(self.btnKP_END, 0, 0, 1, 1)
+
+        self.btnKP_NEXT = QLabel(self.gridLayoutWidget_2)
+        self.btnKP_NEXT.setObjectName(u"btnKP_NEXT")
+        self.btnKP_NEXT.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_8.addWidget(self.btnKP_NEXT, 0, 2, 1, 1)
+
+        self.gridLayoutWidget_3 = QWidget(self.centralwidget)
+        self.gridLayoutWidget_3.setObjectName(u"gridLayoutWidget_3")
+        self.gridLayoutWidget_3.setGeometry(QRect(1000, 149, 161, 51))
+        self.gridLayout_9 = QGridLayout(self.gridLayoutWidget_3)
+        self.gridLayout_9.setObjectName(u"gridLayout_9")
+        self.gridLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.btnKP_LEFT = QLabel(self.gridLayoutWidget_3)
+        self.btnKP_LEFT.setObjectName(u"btnKP_LEFT")
+        self.btnKP_LEFT.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_9.addWidget(self.btnKP_LEFT, 0, 0, 1, 1)
+
+        self.btnKP_BEGIN = QLabel(self.gridLayoutWidget_3)
+        self.btnKP_BEGIN.setObjectName(u"btnKP_BEGIN")
+        self.btnKP_BEGIN.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_9.addWidget(self.btnKP_BEGIN, 0, 1, 1, 1)
+
+        self.btnKP_RIGHT = QLabel(self.gridLayoutWidget_3)
+        self.btnKP_RIGHT.setObjectName(u"btnKP_RIGHT")
+        self.btnKP_RIGHT.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_9.addWidget(self.btnKP_RIGHT, 0, 2, 1, 1)
+
+        self.gridLayoutWidget_4 = QWidget(self.centralwidget)
+        self.gridLayoutWidget_4.setObjectName(u"gridLayoutWidget_4")
+        self.gridLayoutWidget_4.setGeometry(QRect(1000, 99, 161, 51))
+        self.gridLayout_10 = QGridLayout(self.gridLayoutWidget_4)
+        self.gridLayout_10.setObjectName(u"gridLayout_10")
+        self.gridLayout_10.setContentsMargins(0, 0, 0, 0)
+        self.btnKP_UP = QLabel(self.gridLayoutWidget_4)
+        self.btnKP_UP.setObjectName(u"btnKP_UP")
+        self.btnKP_UP.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_10.addWidget(self.btnKP_UP, 0, 1, 1, 1)
+
+        self.btnKP_HOME = QLabel(self.gridLayoutWidget_4)
+        self.btnKP_HOME.setObjectName(u"btnKP_HOME")
+        self.btnKP_HOME.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_10.addWidget(self.btnKP_HOME, 0, 0, 1, 1)
+
+        self.btnKP_PAGE_UP = QLabel(self.gridLayoutWidget_4)
+        self.btnKP_PAGE_UP.setObjectName(u"btnKP_PAGE_UP")
+        self.btnKP_PAGE_UP.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_10.addWidget(self.btnKP_PAGE_UP, 0, 2, 1, 1)
+
+        self.btnKP_ADD = QLabel(self.centralwidget)
+        self.btnKP_ADD.setObjectName(u"btnKP_ADD")
+        self.btnKP_ADD.setGeometry(QRect(1170, 100, 49, 101))
+        self.btnKP_ADD.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.btnKP_SUBTRACT = QLabel(self.centralwidget)
+        self.btnKP_SUBTRACT.setObjectName(u"btnKP_SUBTRACT")
+        self.btnKP_SUBTRACT.setGeometry(QRect(1170, 50, 49, 49))
+        self.btnKP_SUBTRACT.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.btnKP_ENTER = QLabel(self.centralwidget)
+        self.btnKP_ENTER.setObjectName(u"btnKP_ENTER")
+        self.btnKP_ENTER.setGeometry(QRect(1170, 200, 49, 101))
+        self.btnKP_ENTER.setAlignment(Qt.AlignmentFlag.AlignCenter)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -868,5 +996,22 @@ class Ui_MainWindow(object):
         self.btnCONTROL_L.setText(QCoreApplication.translate("MainWindow", u"CTRL", None))
         self.btnSUPER_L.setText(QCoreApplication.translate("MainWindow", u"WIN", None))
         self.spacer1_6.setText("")
+        self.btnKP_MULTIPLY.setText(QCoreApplication.translate("MainWindow", u"*", None))
+        self.btnKP_DIVIDE.setText(QCoreApplication.translate("MainWindow", u"/", None))
+        self.btnNUM_LOCK.setText(QCoreApplication.translate("MainWindow", u"NMLCK", None))
+        self.btnKP_INSERT.setText(QCoreApplication.translate("MainWindow", u"0", None))
+        self.btnKP_DELETE.setText(QCoreApplication.translate("MainWindow", u".", None))
+        self.btnKP_DOWN.setText(QCoreApplication.translate("MainWindow", u"2", None))
+        self.btnKP_END.setText(QCoreApplication.translate("MainWindow", u"1", None))
+        self.btnKP_NEXT.setText(QCoreApplication.translate("MainWindow", u"3", None))
+        self.btnKP_LEFT.setText(QCoreApplication.translate("MainWindow", u"4", None))
+        self.btnKP_BEGIN.setText(QCoreApplication.translate("MainWindow", u"5", None))
+        self.btnKP_RIGHT.setText(QCoreApplication.translate("MainWindow", u"6", None))
+        self.btnKP_UP.setText(QCoreApplication.translate("MainWindow", u"8", None))
+        self.btnKP_HOME.setText(QCoreApplication.translate("MainWindow", u"7", None))
+        self.btnKP_PAGE_UP.setText(QCoreApplication.translate("MainWindow", u"9", None))
+        self.btnKP_ADD.setText(QCoreApplication.translate("MainWindow", u"+", None))
+        self.btnKP_SUBTRACT.setText(QCoreApplication.translate("MainWindow", u"_", None))
+        self.btnKP_ENTER.setText(QCoreApplication.translate("MainWindow", u"ENTER", None))
     # retranslateUi
 
