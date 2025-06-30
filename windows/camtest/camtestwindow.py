@@ -76,7 +76,6 @@ class CamWindow(QMainWindow):
         p = convert_to_Qt_format.scaled(w, h, Qt.KeepAspectRatio)
         return QPixmap.fromImage(p)
 
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     a = CamWindow()

@@ -1,339 +1,329 @@
-from enum import Enum
-
-class Key(Enum):
-    """
-    These are generic platform independent key constants
-    Each graphics backend maps from its own specific key codes to
-    these constants
-    """
-    BACKQUOTE = 'btnBACKQUOTE'
-    ASCII_TILDE = 'btnASCII_TILDE'
-    DIGIT_1 = 'btn1'
-    EXCLAMATION = 'btn1'
-    DIGIT_2 = 'btn2'
-    AT = 'btn2'
-    DIGIT_3 = 'btn3'
-    NUMBER = 'btn3'
-    DIGIT_4 = 'btn4'
-    DOLLAR = 'btn4'
-    DIGIT_5 = 'btn5'
-    PERCENT = 'btn5'
-    DIGIT_6 = 'btn6'
-    CARET = 'btn6'
-    DIGIT_7 = 'btn7'
-    AMPERSAND = 'btn8'
-    DIGIT_8 = 'btn8'
-    ASTERISK = 'btn8'
-    DIGIT_9 = 'btn9'
-    DIGIT_0 = 'btn0'
-    MINUS = 'btnMIN'
-    UNDERSCORE = 'btnMIN'
-    EQUALS = 'btnEQUAL'
-    PLUS = 'btnEQUAL'
-    BACKSPACE = 'btnBACKSP'
-    TAB = 'btnTAB'
-    Q = 'btnQ'
-    Q_UPPER = 'btnQ'
-    W = 'btnW'
-    W_UPPER = 'btnW'
-    E = 'btnE'
-    E_UPPER = 'btnE'
-    R = 'btnR'
-    R_UPPER = 'btnR'
-    T = 'btnT'
-    T_UPPER = 'btnT'
-    Y = 'btnY'
-    Y_UPPER = 'btnY'
-    U = 'btnU'
-    U_UPPER = 'btnU'
-    I = 'btnI'
-    I_UPPER = 'btnI'
-    O = 'btnO'
-    O_UPPER = 'btnO'
-    P = 'btnP'
-    P_UPPER = 'btnP'
-    LEFTPAREN = 'btn9'
-    RIGHTPAREN = 'btn0'
-    LEFTBRACKET = 'btnLEFTBRACKET'
-    RIGHTBRACKET = 'btnRIGHTBRACKET'
-    BRACELEFT = 'btnLEFTBRACKET'
-    BRACERIGHT = 'btnRIGHTBRACKET'
-    BACKSLASH = 'btnBACKSLASH'
-    PIPE = 'btnBACKSLASH'
-    CAPSLOCK = 'btnCAPS'
-    A = 'btnA'
-    A_UPPER = 'btnA'
-    S = 'btnS'
-    S_UPPER = 'btnS'
-    D = 'btnD'
-    D_UPPER = 'btnD'
-    F = 'btnF'
-    F_UPPER = 'btnF'
-    G = 'btnG'
-    G_UPPER = 'btnG'
-    H = 'btnH'
-    H_UPPER = 'btnH'
-    J = 'btnJ'
-    J_UPPER = 'btnJ'
-    K = 'btnK'
-    K_UPPER = 'btnK'
-    L = 'btnL'
-    L_UPPER = 'btnL'
-    SEMICOLON = 'btnSEMICOLON'
-    COLON = 'btnSEMICOLON'
-    DOUBLEQUOTE = 'btnSINGLEQUOTE'
-    SINGLEQUOTE = "btnSINGLEQUOTE"
-    RETURN = 'btnENTER'
-    LEFT_SHIFT = 'btnLSHIFT'
-    Z = 'btnZ'
-    Z_UPPER = 'btnZ'
-    X = 'btnX'
-    X_UPPER = 'btnX'
-    C = 'btnC'
-    C_UPPER = 'btnC'
-    V = 'btnV'
-    V_UPPER = 'btnV'
-    B = 'btnB'
-    B_UPPER = 'btnB'
-    N = 'btnN'
-    N_UPPER = 'btnN'
-    M = 'btnM'
-    M_UPPER = 'btnM'
-    COMMA = 'btnCOMMA'
-    LESSTHAN = 'btnCOMMA'
-    PERIOD = 'btnPERIOD'
-    GREATERTHAN = 'btnPERIOD'
-    FORWARDSLASH = 'btnFORWARDSLASH'
-    QUESTION = 'btnFORWARDSLASH'
-    RIGHT_SHIFT = 'btnRSHIFT'
-    LEFT_CONTROL = 'btnLCTRL'
-    LEFT_META = 'btnWIN'
-    LEFT_ALT = 'btnLALT'
-    SPACE = 'btnSPACE'
-    RIGHT_ALT = 'btnRALT'
-    RIGHT_META = 'btnWIN'
-    CONTEXT_MENU = 'btnMENU'  # windows key
-    RIGHT_CONTROL = 'btnRCTRL'
-    FUNCTION = 'btnFUNCTION'
-    LEFT_ARROW = 'btnLEFT'
-    RIGHT_ARROW = 'btnRIGHT'
-    UP_ARROW = 'btnUP'
-    DOWN_ARROW = 'btnDOWN'
-    # azerty
-    TWO_SUPERIOR = '²'
-    U_GRAVE = 'ù'
-    E_ACUTE = 'é'
-    E_GRAVE = 'è'
-    C_CEDILLE = 'ç'
-    A_GRAVE = 'à'
-    DEGREE = '°'
-    DIACRATICAL = '¨'
-    CIRCUMFLEX = 'ˆ'
-    POUND = '£'
-    A_CIRCUMFLEX = 'ậ'
-    E_CIRCUMFLEX = 'ê'
-    I_CIRCUMFLEX = 'î'
-    O_CIRCUMFLEX = 'ô'
-    U_CIRCUMFLEX = 'û'
-    SECTION = '§'
-    MU = 'μ'
-    #Function Keys
-    F1 = 'btnF1'
-    F2 = 'btnF2'
-    F3 = 'btnF3'
-    F4 = 'btnF4'
-    F5 = 'btnF5'
-    F6 = 'btnF6'
-    F7 = 'btnF7'
-    F8 = 'btnF8'
-    F9 = 'btnF9'
-    F10 = 'btnF10'
-    F11 = 'btnF11'
-    F12 = 'btnF12'
-    DEL = 'btnDEL'
-    ESCAPE = 'btnESC'
-    SCROLLOCK = 'btnSCRLK'
-    PAUSE = 'btnPAUSE'
-    INSERT = 'btnINS'
-    HOME = 'btnHOME'
-    PAGEUP = 'btnPGUP'
-    PAGEDOWN = 'btnPGD'
-    END = 'btnEND'
-
 KEY_MAP = {
-    96: Key.BACKQUOTE,
-    126: Key.ASCII_TILDE,
-    49: Key.DIGIT_1,
-    33: Key.EXCLAMATION,
-    50: Key.DIGIT_2,
-    64: Key.AT,
-    51: Key.DIGIT_3,
-    35: Key.NUMBER,
-    52: Key.DIGIT_4,
-    36: Key.DOLLAR,
-    53: Key.DIGIT_5,
-    37: Key.PERCENT,
-    54: Key.DIGIT_6,
-    94: Key.CIRCUMFLEX,
-    55: Key.DIGIT_7,
-    38: Key.AMPERSAND,
-    56: Key.DIGIT_8,
-    42: Key.ASTERISK,
-    57: Key.DIGIT_9,
-    40: Key.LEFTPAREN,
-    48: Key.DIGIT_0,
-    41: Key.RIGHTPAREN,
-    45: Key.MINUS,
-    43: Key.PLUS,
-    61: Key.EQUALS,
-    65288: Key.BACKSPACE,
-    65289: Key.TAB,
-    113: Key.Q,
-    81: Key.Q_UPPER,
-    119: Key.W,
-    87: Key.W_UPPER,
-    101: Key.E,
-    69: Key.E_UPPER,
-    114: Key.R,
-    82: Key.R_UPPER,
-    116: Key.T,
-    84: Key.T_UPPER,
-    121: Key.Y,
-    89: Key.Y_UPPER,
-    117: Key.U,
-    85: Key.U_UPPER,
-    105: Key.I,
-    73: Key.I_UPPER,
-    111: Key.O,
-    79: Key.O_UPPER,
-    112: Key.P,
-    80: Key.P_UPPER,
-    91: Key.LEFTBRACKET,
-    123: Key.BRACELEFT,
-    93: Key.RIGHTBRACKET,
-    125: Key.BRACERIGHT,
-    92: Key.BACKSLASH,
-    124: Key.PIPE,
-    65509: Key.CAPSLOCK,
-    65792: Key.CAPSLOCK, # MACOS
-    97: Key.A,
-    65: Key.A_UPPER,
-    115: Key.S,
-    83: Key.S_UPPER,
-    100: Key.D,
-    68: Key.D_UPPER,
-    102: Key.F,
-    70: Key.F_UPPER,
-    103: Key.G,
-    71: Key.G_UPPER,
-    104: Key.H,
-    72: Key.H_UPPER,
-    106: Key.J,
-    74: Key.J_UPPER,
-    107: Key.K,
-    75: Key.K_UPPER,
-    108: Key.L,
-    76: Key.L_UPPER,
-    59: Key.SEMICOLON,
-    58: Key.COLON,
-    39: Key.SINGLEQUOTE,
-    34: Key.DOUBLEQUOTE,
-    65293: Key.RETURN,
-    131074: Key.LEFT_SHIFT, # macOs
-    131330: Key.LEFT_SHIFT, # macOs
-    65505: Key.LEFT_SHIFT,
-    122: Key.Z,
-    90: Key.Z_UPPER,
-    120: Key.X,
-    88: Key.X_UPPER,
-    99: Key.C,
-    67: Key.C_UPPER,
-    118: Key.V,
-    86: Key.V_UPPER,
-    98: Key.B,
-    66: Key.B_UPPER,
-    110: Key.N,
-    78: Key.N_UPPER,
-    109: Key.M,
-    77: Key.M_UPPER,
-    44: Key.COMMA,
-    60: Key.LESSTHAN,
-    46: Key.PERIOD,
-    62: Key.GREATERTHAN,
-    47: Key.FORWARDSLASH,
-    63: Key.QUESTION,
-    131076: Key.RIGHT_SHIFT, # macOs
-    65506: Key.RIGHT_SHIFT,
-    262145: Key.LEFT_CONTROL, # macOs
-    65507: Key.LEFT_CONTROL,
-    1048584: Key.LEFT_META, # macOs
-    65511: Key.LEFT_META,
-    524320: Key.LEFT_ALT, # macOs
-    65513: Key.LEFT_ALT,
-    32: Key.SPACE,
-    524352: Key.RIGHT_ALT, # macOs
-    65514: Key.RIGHT_ALT,
-    1048592: Key.RIGHT_META, # macOs
-    65512: Key.RIGHT_META,
-    7208976: Key.CONTEXT_MENU, # macOs
-    1073741925: Key.CONTEXT_MENU,
-    270336: Key.RIGHT_CONTROL,
-    65508: Key.RIGHT_CONTROL, # macOs
-    65362: Key.UP_ARROW,
-    65364: Key.DOWN_ARROW,
-    65361: Key.LEFT_ARROW,
-    65363: Key.RIGHT_ARROW,
-    # azerty
-    249: Key.U_GRAVE,
-    2812: Key.CARET,
-    233: Key.E_ACUTE,
-    45: Key.MINUS,
-    232: Key.E_GRAVE,
-    95: Key.UNDERSCORE,
-    231: Key.C_CEDILLE,
-    224: Key.A_GRAVE,
-    61: Key.EQUALS,
-    176: Key.DEGREE,
-    168: Key.DIACRATICAL,
-    163: Key.POUND,
-    226: Key.A, # A_CIRCUMFLEX
-    234: Key.E, # E_CIRCUMFLEX
-    238: Key.I, # I_CIRCUMFLEX
-    244: Key.O, # O_CIRCUMFLEX
-    251: Key.U, # U_CIRCUMFLEX
-    167: Key.SECTION,
-    16777264: Key.F1,
-    16777265: Key.F2,
-    16777266: Key.F3,
-    16777267: Key.F4,
-    16777268: Key.F5,
-    16777269: Key.F6,
-    16777270: Key.F7,
-    16777271: Key.F8,
-    16777272: Key.F9,
-    16777273: Key.F10,
-    16777274: Key.F11,
-    16777275: Key.F12,
-    16777223: Key.DEL,
-    16777249: Key.LEFT_CONTROL,
-    16777248: Key.LEFT_SHIFT,
-    16777252: Key.CAPSLOCK,
-    16777216: Key.ESCAPE,
-    16777220: Key.RETURN,
-    16777254: Key.SCROLLOCK,
-    16777224: Key.PAUSE,
-    16777222: Key.INSERT,
-    16777232: Key.HOME,
-    16777238: Key.PAGEUP,
-    16777239: Key.PAGEDOWN,
-    16777235: Key.UP_ARROW,
-    16777237: Key.DOWN_ARROW,
-    16777236: Key.RIGHT_ARROW,
-    16777234: Key.LEFT_ARROW,
-    16777301: Key.CONTEXT_MENU,
-    16777250: Key.LEFT_META,
-    16777251: Key.LEFT_ALT,
-    16777219: Key.BACKSPACE,
-    16777217: Key.TAB,
-    16777233: Key.END,
+    "100": "d",
+    "101": "e",
+    "102": "f",
+    "103": "g",
+    "104": "h",
+    "105": "i",
+    "106": "j",
+    "107": "k",
+    "108": "l",
+    "109": "m",
+    "110": "n",
+    "111": "o",
+    "112": "p",
+    "113": "q",
+    "114": "r",
+    "115": "s",
+    "116": "t",
+    "117": "u",
+    "118": "v",
+    "119": "w",
+    "120": "x",
+    "121": "y",
+    "122": "z",
+    "123": "braceleft",
+    "124": "bar",
+    "125": "braceright",
+    "126": "asciitilde",
+    "160": "nobreakspace",
+    "161": "exclamdown",
+    "162": "cent",
+    "163": "sterling",
+    "164": "currency",
+    "165": "yen",
+    "166": "brokenbar",
+    "167": "section",
+    "168": "diaeresis",
+    "169": "copyright",
+    "170": "ordfeminine",
+    "171": "guillemotleft",
+    "172": "notsign",
+    "173": "hyphen",
+    "174": "registered",
+    "175": "macron",
+    "176": "degree",
+    "177": "plusminus",
+    "178": "twosuperior",
+    "179": "threesuperior",
+    "180": "acute",
+    "181": "mu",
+    "182": "paragraph",
+    "183": "periodcentered",
+    "184": "cedilla",
+    "185": "onesuperior",
+    "186": "masculine",
+    "187": "guillemotright",
+    "188": "onequarter",
+    "189": "onehalf",
+    "190": "threequarters",
+    "191": "questiondown",
+    "192": "Agrave",
+    "193": "Aacute",
+    "194": "Acircumflex",
+    "195": "Atilde",
+    "196": "Adiaeresis",
+    "197": "Aring",
+    "198": "AE",
+    "199": "Ccedilla",
+    "200": "Egrave",
+    "201": "Eacute",
+    "202": "Ecircumflex",
+    "203": "Ediaeresis",
+    "204": "Igrave",
+    "205": "Iacute",
+    "206": "Icircumflex",
+    "207": "Idiaeresis",
+    "208": "ETH",
+    "209": "Ntilde",
+    "210": "Ograve",
+    "211": "Oacute",
+    "212": "Ocircumflex",
+    "213": "Otilde",
+    "214": "Odiaeresis",
+    "215": "multiply",
+    "216": "Ooblique",
+    "217": "Ugrave",
+    "218": "Uacute",
+    "219": "Ucircumflex",
+    "220": "Udiaeresis",
+    "221": "Yacute",
+    "222": "THORN",
+    "223": "ssharp",
+    "224": "agrave",
+    "225": "aacute",
+    "226": "acircumflex",
+    "227": "atilde",
+    "228": "adiaeresis",
+    "229": "aring",
+    "230": "ae",
+    "231": "ccedilla",
+    "232": "egrave",
+    "233": "eacute",
+    "234": "ecircumflex",
+    "235": "ediaeresis",
+    "236": "igrave",
+    "237": "iacute",
+    "238": "icircumflex",
+    "239": "idiaeresis",
+    "240": "eth",
+    "241": "ntilde",
+    "242": "ograve",
+    "243": "oacute",
+    "244": "ocircumflex",
+    "245": "otilde",
+    "246": "odiaeresis",
+    "247": "division",
+    "248": "oslash",
+    "249": "ugrave",
+    "250": "uacute",
+    "251": "ucircumflex",
+    "252": "udiaeresis",
+    "253": "yacute",
+    "254": "thorn",
+    "255": "ydiaeresis",
+    "32": "space",
+    "33": "exclam",
+    "34": "quotedbl",
+    "35": "numbersign",
+    "36": "dollar",
+    "37": "percent",
+    "38": "ampersand",
+    "39": "apostrophe",
+    "40": "parenleft",
+    "41": "parenright",
+    "42": "asterisk",
+    "43": "plus",
+    "44": "comma",
+    "45": "minus",
+    "46": "period",
+    "47": "slash",
+    "48": "0",
+    "49": "1",
+    "50": "2",
+    "51": "3",
+    "52": "4",
+    "53": "5",
+    "54": "6",
+    "55": "7",
+    "56": "8",
+    "57": "9",
+    "58": "colon",
+    "59": "semicolon",
+    "60": "less",
+    "61": "equal",
+    "62": "greater",
+    "63": "question",
+    "64": "at",
+    "65": "A",
+    "65288": "BackSpace",
+    "65289": "Tab",
+    "65290": "Linefeed",
+    "65291": "Clear",
+    "65293": "Return",
+    "65299": "Pause",
+    "65300": "Scroll_Lock",
+    "65301": "Sys_Req",
+    "65307": "Escape",
+    "65312": "Multi_key",
+    "65313": "Kanji",
+    "65314": "Muhenkan",
+    "65315": "Henkan",
+    "65316": "Romaji",
+    "65317": "Hiragana",
+    "65318": "Katakana",
+    "65319": "Hiragana_Katakana",
+    "65320": "Zenkaku",
+    "65321": "Hankaku",
+    "65322": "Zenkaku_Hankaku",
+    "65323": "Touroku",
+    "65324": "Massyo",
+    "65325": "Kana_Lock",
+    "65326": "Kana_Shift",
+    "65327": "Eisu_Shift",
+    "65328": "Eisu_toggle",
+    "65340": "SingleCandidate",
+    "65341": "MultipleCandidate",
+    "65342": "Mae_Koho",
+    "65360": "Home",
+    "65361": "Left",
+    "65362": "Up",
+    "65363": "Right",
+    "65364": "Down",
+    "65365": "Page_Up",
+    "65366": "Page_Down",
+    "65367": "End",
+    "65368": "Begin",
+    "65376": "Select",
+    "65377": "Print",
+    "65378": "Execute",
+    "65379": "Insert",
+    "65381": "Undo",
+    "65382": "Redo",
+    "65383": "Menu",
+    "65384": "Find",
+    "65385": "Cancel",
+    "65386": "Help",
+    "65387": "Break",
+    "65406": "Mode_switch",
+    "65407": "Num_Lock",
+    "65408": "KP_Space",
+    "65417": "KP_Tab",
+    "65421": "KP_Enter",
+    "65425": "KP_F1",
+    "65426": "KP_F2",
+    "65427": "KP_F3",
+    "65428": "KP_F4",
+    "65429": "KP_Home",
+    "65430": "KP_Left",
+    "65431": "KP_Up",
+    "65432": "KP_Right",
+    "65433": "KP_Down",
+    "65434": "KP_Page_Up",
+    "65435": "KP_Next",
+    "65436": "KP_End",
+    "65437": "KP_Begin",
+    "65438": "KP_Insert",
+    "65439": "KP_Delete",
+    "65450": "KP_Multiply",
+    "65451": "KP_Add",
+    "65452": "KP_Separator",
+    "65453": "KP_Subtract",
+    "65454": "KP_Decimal",
+    "65455": "KP_Divide",
+    "65456": "KP_0",
+    "65457": "KP_1",
+    "65458": "KP_2",
+    "65459": "KP_3",
+    "65460": "KP_4",
+    "65461": "KP_5",
+    "65462": "KP_6",
+    "65463": "KP_7",
+    "65464": "KP_8",
+    "65465": "KP_9",
+    "65469": "KP_Equal",
+    "65470": "F1",
+    "65471": "F2",
+    "65472": "F3",
+    "65473": "F4",
+    "65474": "F5",
+    "65475": "F6",
+    "65476": "F7",
+    "65477": "F8",
+    "65478": "F9",
+    "65479": "F10",
+    "65480": "F11",
+    "65481": "F12",
+    "65482": "F13",
+    "65483": "F14",
+    "65484": "F15",
+    "65485": "F16",
+    "65486": "F17",
+    "65487": "F18",
+    "65488": "F19",
+    "65489": "F20",
+    "65490": "F21",
+    "65491": "F22",
+    "65492": "F23",
+    "65493": "F24",
+    "65494": "F25",
+    "65495": "F26",
+    "65496": "F27",
+    "65497": "F28",
+    "65498": "F29",
+    "65499": "F30",
+    "65500": "F31",
+    "65501": "F32",
+    "65502": "F33",
+    "65503": "F34",
+    "65504": "F35",
+    "65505": "Shift_L",
+    "65506": "Shift_R",
+    "65507": "Control_L",
+    "65508": "Control_R",
+    "65509": "Caps_Lock",
+    "65510": "Shift_Lock",
+    "65511": "Meta_L",
+    "65512": "Meta_R",
+    "65513": "Alt_L",
+    "65514": "Alt_R",
+    "65515": "Super_L",
+    "65516": "Super_R",
+    "65517": "Hyper_L",
+    "65518": "Hyper_R",
+    "65535": "Delete",
+    "66": "B",
+    "67": "C",
+    "68": "D",
+    "69": "E",
+    "70": "F",
+    "71": "G",
+    "72": "H",
+    "73": "I",
+    "74": "J",
+    "75": "K",
+    "76": "L",
+    "77": "M",
+    "78": "N",
+    "79": "O",
+    "80": "P",
+    "81": "Q",
+    "82": "R",
+    "83": "S",
+    "84": "T",
+    "85": "U",
+    "86": "V",
+    "87": "W",
+    "88": "X",
+    "89": "Y",
+    "90": "Z",
+    "91": "bracketleft",
+    "92": "backslash",
+    "93": "bracketright",
+    "94": "asciicircum",
+    "95": "underscore",
+    "96": "grave",
+    "97": "a",
+    "98": "b",
+    "99": "c"
 }

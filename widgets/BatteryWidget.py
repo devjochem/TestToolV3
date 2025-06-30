@@ -19,9 +19,6 @@ def getData():
     row_labels = list(next(iter(battery_data.values())).keys())
     column_headers = list(battery_data.keys())
 
-    print(row_labels)
-    print(column_headers)
-
     # Each row is a battery property (e.g., state), values go across batteries
     table = []
     for row_label in row_labels:

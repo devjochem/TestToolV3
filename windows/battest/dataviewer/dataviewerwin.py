@@ -32,7 +32,6 @@ class DataWindow(QMainWindow):
         self.graphWidget.setBackground('black')
 
         self.bats = {}
-        colors = [(255,0,0),(0,255,0),(0,255,255)]
 
         self.ui.pushButton.clicked.connect(lambda p: self.open_file_dialog())
 
@@ -47,7 +46,7 @@ class DataWindow(QMainWindow):
             datetime_object = datetime.strptime(data[0], "%Y-%m-%d %H:%M:%S")
             time = datetime_object.timestamp()
             bat = data[1]
-            cap = int(data[2].replace('\n', ''))
+            cap = float(data[2].replace('\n', ''))
 
             if not self.bats.keys().__contains__(bat):
                 id = ''.join(x for x in bat if x.isdigit())
@@ -93,10 +92,6 @@ class DataWindow(QMainWindow):
             path = Path(filename)
             with open(path, 'r') as file:
                  self.start_plot(file.readlines())
-
-    #    fileName = QFileDialog.getOpenFileName(self, tr("Open Image"), "/home/jana", tr("Log Files (*.log)"))
-    #    with open(fileName, 'r') as file:
-    #         self.start_plot(file.readlines())
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

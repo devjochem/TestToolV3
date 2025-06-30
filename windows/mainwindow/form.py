@@ -11,14 +11,15 @@
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
+    QCursor, QFont, QFontDatabase, QGradient,
+    QIcon, QImage, QKeySequence, QLinearGradient,
+    QPainter, QPalette, QPixmap, QRadialGradient,
+    QTransform)
 from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QLayout,
-    QMainWindow, QMenuBar, QPushButton, QSizePolicy,
-    QStatusBar, QTableWidget, QTableWidgetItem, QTextEdit,
-    QVBoxLayout, QWidget)
+    QMainWindow, QMenu, QMenuBar, QPushButton,
+    QSizePolicy, QStatusBar, QTableWidget, QTableWidgetItem,
+    QTextEdit, QVBoxLayout, QWidget)
 
 from widgets.BatteryWidget import BatWidget
 
@@ -27,6 +28,10 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(1197, 699)
+        self.actionUpdate = QAction(MainWindow)
+        self.actionUpdate.setObjectName(u"actionUpdate")
+        self.actionConsole = QAction(MainWindow)
+        self.actionConsole.setObjectName(u"actionConsole")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -49,6 +54,11 @@ class Ui_MainWindow(object):
         self.pushButton_lcd.setObjectName(u"pushButton_lcd")
 
         self.verticalLayout.addWidget(self.pushButton_lcd)
+
+        self.pushButton_ts = QPushButton(self.centralwidget)
+        self.pushButton_ts.setObjectName(u"pushButton_ts")
+
+        self.verticalLayout.addWidget(self.pushButton_ts)
 
         self.pushButton_2 = QPushButton(self.centralwidget)
         self.pushButton_2.setObjectName(u"pushButton_2")
@@ -87,11 +97,17 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1197, 24))
+        self.menubar.setGeometry(QRect(0, 0, 1197, 30))
+        self.menuFile = QMenu(self.menubar)
+        self.menuFile.setObjectName(u"menuFile")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
+
+        self.menubar.addAction(self.menuFile.menuAction())
+        self.menuFile.addAction(self.actionUpdate)
+        self.menuFile.addAction(self.actionConsole)
 
         self.retranslateUi(MainWindow)
 
@@ -100,9 +116,12 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Jochems TestTool", None))
+        self.actionUpdate.setText(QCoreApplication.translate("MainWindow", u"Update", None))
+        self.actionConsole.setText(QCoreApplication.translate("MainWindow", u"Console", None))
         self.pushButton_kb.setText(QCoreApplication.translate("MainWindow", u"Keyboard", None))
         self.pushButton_cm.setText(QCoreApplication.translate("MainWindow", u"Camera", None))
         self.pushButton_lcd.setText(QCoreApplication.translate("MainWindow", u"LCD", None))
+        self.pushButton_ts.setText(QCoreApplication.translate("MainWindow", u"TouchScreen", None))
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Sound", None))
         self.batButton.setText(QCoreApplication.translate("MainWindow", u"Battery", None))
         self.userOutput.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -111,7 +130,8 @@ class Ui_MainWindow(object):
 "hr { height: 1px; border-width: 0; }\n"
 "li.unchecked::marker { content: \"\\2610\"; }\n"
 "li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:'Adwaita Sans'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Noto Sans'; font-size:10pt;\"><br /></p></body></html>", None))
+"</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
+        self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
     # retranslateUi
 

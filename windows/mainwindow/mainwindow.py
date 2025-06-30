@@ -1,10 +1,20 @@
 # This Python file uses the following encoding: utf-8
 import logging
+import os
+import shutil
+import subprocess
 import sys
+import tempfile
+import time
+from subprocess import Popen
 
+import requests
+from packaging import version
 from PySide6.QtWidgets import QMainWindow, QAbstractItemView, QTableWidgetItem, QApplication
+
 from lib.systemspecs import Specs
 from windows.audiotest.audiotestwindow import AudioTest
+from windows.console.console import ConsoleWindow
 
 from windows.lcdtest.lcdtestwindow import LCDWindow
 from windows.kbtest.kbtestwindow import KBWindow
@@ -12,6 +22,7 @@ from windows.camtest.camtestwindow import CamWindow
 from windows.battest.battestwintest import BatWindow
 
 from windows.mainwindow.form import Ui_MainWindow
+from windows.touchtest.touchWindow import TouchTester
 
 
 def info(key, data):
@@ -39,6 +50,9 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_cm.clicked.connect(lambda p: self.camwindow())
         self.ui.pushButton_2.clicked.connect(lambda p: AudioTest().show())
         self.ui.batButton.clicked.connect(lambda p: BatWindow().show())
+        #self.ui.actionUpdate.triggered.connect(lambda p: self_update())
+        #self.ui.actionConsole.triggered.connect(lambda p: ConsoleWindow().show())
+        self.ui.pushButton_ts.clicked.connect(lambda p: self.touchwindow())
         log.info("TestTool started")
         specs = Specs()
         self.specs = specs.getSpecs()
@@ -60,7 +74,6 @@ class MainWindow(QMainWindow):
         table.setRowCount(len(disks))
         table.setColumnCount(3)
         table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        # w.verticalHeader().setVisible(False)
         table.horizontalHeader().setStretchLastSection(True)
         table.setHorizontalHeaderLabels(('Model', 'Size', 'Type'))
 
@@ -83,12 +96,16 @@ class MainWindow(QMainWindow):
         self.text.append(info("CPU", self.specs['cpu']))
         self.text.append(info("RAM", self.specs['ram']))
 
+        self.text.append(info("Screen Res", self.specs['resolution']))
         gpus = self.specs["gpu"]
         self.infolist(self.text,"GPU(S)",gpus)
         self.populate_disks()
         #self.text.append(f'   {self.specs["cpu"]}')
         return self.text
 
+    def consolewindow(self):
+        self.consoleWindow = ConsoleWindow()
+        self.consoleWindow.show()
 
     def lcdwindow(self):
         self.lcdWindow = LCDWindow()
@@ -103,6 +120,9 @@ class MainWindow(QMainWindow):
         self.camWindow = CamWindow()
         self.camWindow.show()
 
+    def touchwindow(self):
+        self.touchWindow = TouchTester()
+        self.touchWindow.show()
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     w = MainWindow()
