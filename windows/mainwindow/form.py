@@ -55,6 +55,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.pushButton_lcd)
 
+        self.pushButton_ts = QPushButton(self.centralwidget)
+        self.pushButton_ts.setObjectName(u"pushButton_ts")
+
+        self.verticalLayout.addWidget(self.pushButton_ts)
+
         self.pushButton_2 = QPushButton(self.centralwidget)
         self.pushButton_2.setObjectName(u"pushButton_2")
 
@@ -116,6 +121,7 @@ class Ui_MainWindow(object):
         self.pushButton_kb.setText(QCoreApplication.translate("MainWindow", u"Keyboard", None))
         self.pushButton_cm.setText(QCoreApplication.translate("MainWindow", u"Camera", None))
         self.pushButton_lcd.setText(QCoreApplication.translate("MainWindow", u"LCD", None))
+        self.pushButton_ts.setText(QCoreApplication.translate("MainWindow", u"TouchScreen", None))
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Sound", None))
         self.batButton.setText(QCoreApplication.translate("MainWindow", u"Battery", None))
         self.userOutput.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

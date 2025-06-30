@@ -22,68 +22,7 @@ from windows.camtest.camtestwindow import CamWindow
 from windows.battest.battestwintest import BatWindow
 
 from windows.mainwindow.form import Ui_MainWindow
-
-__version__ = "1.0.0"
-GITHUB_REPO = "devjochem/TestToolV3"
-ASSET_MATCH = "TestTool"
-
-def get_latest_release(repo):
-    r = requests.get(f"https://api.github.com/repos/{repo}/releases/latest")
-    r.raise_for_status()
-    return r.json()
-
-def download_asset(asset_url):
-    headers = {'Accept': 'application/octet-stream'}
-    r = requests.get(asset_url, headers=headers, stream=True)
-    r.raise_for_status()
-
-    fd, tmp_path = tempfile.mkstemp()
-    with os.fdopen(fd, 'wb') as f:
-        shutil.copyfileobj(r.raw, f)
-    os.chmod(tmp_path, 0o755)
-    return tmp_path
-
-def launch_delayed_replacement(old_path, new_path):
-    """
-    Launch a stub process that waits for the current process to exit,
-    replaces the old binary, and restarts it.
-    """
-    stub_code = f"""
-import os, sys, time, shutil
-time.sleep(2)
-try:
-    shutil.copy2(r"{new_path}", r"{old_path}")
-    os.execv(r"{old_path}", [r"{old_path}"])
-except Exception as e:
-    print("Self-update failed:", e)
-    sys.exit(1)
-"""
-    stub_file = tempfile.NamedTemporaryFile("w", delete=False, suffix=".py")
-    stub_file.write(stub_code)
-    stub_file.close()
-
-    # Launch stub with the system Python executable
-    subprocess.Popen([sys.executable, stub_file.name])
-    print("Launched update stub. Exiting to complete update.")
-    sys.exit(0)
-
-def self_update():
-    print(f"Current version: {__version__}")
-    release = get_latest_release(GITHUB_REPO)
-    latest_version = release["tag_name"].lstrip("v")
-
-    if version.parse(latest_version) <= version.parse(__version__):
-        print("Already up to date.")
-        return
-
-    print(f"New version available: {latest_version}")
-    for asset in release["assets"]:
-        if ASSET_MATCH in asset["name"]:
-            print(f"Downloading asset: {asset['name']}")
-            new_binary = download_asset(asset["url"])
-            current_binary = sys.executable
-            print(f"Preparing to update: {current_binary}")
-            launch_delayed_replacement(current_binary, new_binary)
+from windows.touchtest.touchWindow import TouchTester
 
 
 def info(key, data):
@@ -112,7 +51,8 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_2.clicked.connect(lambda p: AudioTest().show())
         self.ui.batButton.clicked.connect(lambda p: BatWindow().show())
         #self.ui.actionUpdate.triggered.connect(lambda p: self_update())
-        self.ui.actionConsole.triggered.connect(lambda p: ConsoleWindow().show())
+        #self.ui.actionConsole.triggered.connect(lambda p: ConsoleWindow().show())
+        self.ui.pushButton_ts.clicked.connect(lambda p: self.touchwindow())
         log.info("TestTool started")
         specs = Specs()
         self.specs = specs.getSpecs()
@@ -134,7 +74,6 @@ class MainWindow(QMainWindow):
         table.setRowCount(len(disks))
         table.setColumnCount(3)
         table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        # w.verticalHeader().setVisible(False)
         table.horizontalHeader().setStretchLastSection(True)
         table.setHorizontalHeaderLabels(('Model', 'Size', 'Type'))
 
@@ -157,6 +96,7 @@ class MainWindow(QMainWindow):
         self.text.append(info("CPU", self.specs['cpu']))
         self.text.append(info("RAM", self.specs['ram']))
 
+        self.text.append(info("Screen Res", self.specs['resolution']))
         gpus = self.specs["gpu"]
         self.infolist(self.text,"GPU(S)",gpus)
         self.populate_disks()
@@ -180,6 +120,9 @@ class MainWindow(QMainWindow):
         self.camWindow = CamWindow()
         self.camWindow.show()
 
+    def touchwindow(self):
+        self.touchWindow = TouchTester()
+        self.touchWindow.show()
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     w = MainWindow()

@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout" rowstretch="3,4" columnstretch="1,10,10" columnminimumwidth="0,0,0">
     <item row="0" column="0" rowspan="2">
-     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0">
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0">
       <property name="spacing">
        <number>3</number>
       </property>
@@ -41,6 +41,13 @@
        <widget class="QPushButton" name="pushButton_lcd">
         <property name="text">
          <string>LCD</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_ts">
+        <property name="text">
+         <string>TouchScreen</string>
         </property>
        </widget>
       </item>

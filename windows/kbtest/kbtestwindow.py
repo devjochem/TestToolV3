@@ -1,5 +1,3 @@
-
-import json
 from PySide6.QtWidgets import QApplication, QLabel, QMainWindow
 from PySide6.QtCore import Signal, QObject
 
@@ -8,7 +6,6 @@ from Xlib.ext import record
 from Xlib.protocol import rq
 from threading import Thread
 
-import keymap
 from windows.kbtest import key
 from windows.kbtest.kbtest import Ui_MainWindow
 
@@ -89,7 +86,6 @@ class KBWindow(QMainWindow):
                 self.emitter.key_event.emit(key_name, event_type)
 
     def on_key_event(self, key_name, event_type):
-        print(f"Key {event_type}: {key_name}")
         self.setColor(event_type, key_name)
 
 
