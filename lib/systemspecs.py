@@ -1,6 +1,6 @@
 from Xlib import display
 
-from lib.diskinfo import DiskInfo
+from lib.diskinfo import Disks
 from lib.readfile import ReadFile
 
 from lib.runcommand import RunCMD
@@ -8,7 +8,6 @@ from lib.runcommand import RunCMD
 class Specs:
 
     def __init__(self):
-        self.di = DiskInfo()
         self.specs = {
             "vendor": ReadFile("/sys/devices/virtual/dmi/id/board_vendor").getdata(),
             "model": ReadFile("/sys/devices/virtual/dmi/id/board_name").getdata(),
@@ -23,7 +22,7 @@ class Specs:
         return self.specs
 
     def getDisks(self):
-        disks = self.di.get_disk_list(sorting=True)
+        disks = Disks().get()
         return disks
 
     def getResolution(self):

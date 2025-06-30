@@ -1,15 +1,6 @@
 # This Python file uses the following encoding: utf-8
 import logging
-import os
-import shutil
-import subprocess
 import sys
-import tempfile
-import time
-from subprocess import Popen
-
-import requests
-from packaging import version
 from PySide6.QtWidgets import QMainWindow, QAbstractItemView, QTableWidgetItem, QApplication
 
 from lib.systemspecs import Specs
@@ -76,14 +67,10 @@ class MainWindow(QMainWindow):
         table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         table.horizontalHeader().setStretchLastSection(True)
         table.setHorizontalHeaderLabels(('Model', 'Size', 'Type'))
-
-        for i,d in enumerate(disks):
-            if d.get_type_str() == 'LOOP':
-                continue
-            s, u = d.get_size_in_hrf()
-            table.setItem(i, 0, QTableWidgetItem(d.get_model()))
-            table.setItem(i, 1, QTableWidgetItem(f"{s:.1f}  {u} "))
-            table.setItem(i, 2, QTableWidgetItem(d.get_type_str()))
+        for i,disk in enumerate(disks):
+            table.setItem(i, 0, QTableWidgetItem(disk['model']))
+            table.setItem(i, 1, QTableWidgetItem(f"{disk['size_gb']} GB"))
+            table.setItem(i, 2, QTableWidgetItem(disk['type']))
         table.resizeColumnsToContents()
 
     def useroutput(self):
