@@ -5,8 +5,7 @@ import subprocess
 from Xlib import display
 
 from lib.diskinfo import Disks
-from lib.dmidecode import run_dmidecode, get_manufacturer, get_model, get_serial_number, get_cpu_info, get_memory
-from lib.readfile import ReadFile
+from lib.dmidecode import run_dmidecode, get_manufacturer, get_model, get_serial_number, get_cpu_info
 
 from lib.runcommand import RunCMD
 
@@ -91,4 +90,4 @@ class Specs:
         screen = d.screen()
         width = screen.width_in_pixels
         height = screen.height_in_pixels
-        return width, height
+        return f"{width}x{height}"

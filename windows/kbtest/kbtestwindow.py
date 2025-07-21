@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication, QLabel, QMainWindow
+from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QMessageBox
 from PySide6.QtCore import Signal, QObject
 
 from Xlib import X, display
@@ -14,6 +14,8 @@ class KeyEventEmitter(QObject):
     key_event = Signal(str, str)
 
 class KBWindow(QMainWindow):
+
+    dataSent = Signal(bool)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -32,11 +34,6 @@ class KBWindow(QMainWindow):
 
         self.record_thread = Thread(target=self.start_recording, daemon=True)
         self.record_thread.start()
-
-    def closeEvent(self, event):
-        self.d.record_disable_context(self.ctx)
-        self.d.flush()
-        super().closeEvent(event)
 
     def start_recording(self):
         d = display.Display()  # Open display in this thread
@@ -100,3 +97,30 @@ class KBWindow(QMainWindow):
             case "released":
                 color = "green"
         self.findChild(QLabel, btn).setStyleSheet(f"background-color: {color};  border: 1px solid black;")
+
+    def closeEvent(self, event):
+        # Call your custom function here
+        self.on_close()
+
+        # Optionally, confirm the close with the user
+        reply = QMessageBox.question(
+            self,
+            "KB Results",
+            "Werkt het toetsenbord goed?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No,
+        )
+
+        if reply == QMessageBox.Yes:
+            self.send_data(True)
+            event.accept()
+        else:
+            self.send_data(False)
+            event.accept()
+
+    def on_close(self):
+        self.d.record_disable_context(self.ctx)
+        self.d.flush()
+
+    def send_data(self, data):
+        self.dataSent.emit(data)
