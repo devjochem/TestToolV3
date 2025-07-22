@@ -37,12 +37,14 @@ def create_table_pdf(filename, customer_name, specdatas, diskdatas ,testdatas, v
 
     # Populate table rows
     for item in specdatas:
-
         if item[0] == "GPU's":
-            specdata.append(["Gpu's", item[1]])
-            if len(item) > 2:
-                for gpu in item[2:]:
+            gpus = item[1].split(",")
+            if len(gpus) > 2:
+                specdata.append(["Gpu's", gpus[0]])
+                for gpu in gpus[2:]:
                     specdata.append(["", gpu])
+            else:
+                specdata.append(["Gpu's", item[1]])
         else:
             part, result = item
             specdata.append([part, result])
@@ -146,6 +148,7 @@ def createspecs():
         elif isinstance(value, list):
             value = ", ".join(str(v) for v in value) if value else "Not detected"
 
+
         systemspec.append((label, value))
 
     disks = []
@@ -199,17 +202,13 @@ def format_test_data(data):
             value = ", ".join(str(v) for v in value) if value else "Not tested"
 
         visual.append((label, value))
+
     return finaldata, visual
 
-def generate_report(name ,data):
-
-    print(data)
+def generate_report(name, data):
     testdata, visualdata = format_test_data(data)
 
     specs, disks = createspecs()
-
-    print(testdata)
-    print(visualdata)
 
     create_table_pdf("data.pdf", name, specs, disks, testdata, visualdata)
 

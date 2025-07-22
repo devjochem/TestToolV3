@@ -9,6 +9,7 @@ from lib.results import generate_report
 from lib.systemspecs import Specs
 from windows.audiotest.audiotestwindow import AudioTest
 from windows.console.console import ConsoleWindow
+from windows.dialogs.NameDialog import NameDialog
 
 from windows.lcdtest.lcdtestwindow import LCDWindow
 from windows.kbtest.kbtestwindow import KBWindow
@@ -30,6 +31,7 @@ def info(key, data):
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.nameWindow = None
         self.report = None
         self.visualWindow = None
         self.audioWindow = None
@@ -131,7 +133,7 @@ class MainWindow(QMainWindow):
             self.kbWindow.dataSent.connect(self.receive_data_kb)
         self.kbWindow.show()
 
-    @Slot(bool)
+    @Slot(str)
     def receive_data_kb(self, data):
         self.test_results['KB'] = data
         self.run_next_test()
@@ -142,7 +144,7 @@ class MainWindow(QMainWindow):
             self.camWindow.dataSent.connect(self.receive_data_cam)
         self.camWindow.show()
 
-    @Slot(bool)
+    @Slot(str)
     def receive_data_cam(self, data):
         self.test_results['CAM'] = data
         self.run_next_test()
@@ -157,6 +159,17 @@ class MainWindow(QMainWindow):
     def receive_data_audio(self, data):
         self.test_results['AUDIO'] = data
         self.run_next_test()
+
+    def namewindow(self):
+        if self.nameWindow is None:
+            self.nameWindow = NameDialog()
+            if self.nameWindow.exec():
+                data = self.nameWindow.get_input_text()
+                self.test_results["NAME"] = data
+                self.run_next_test()
+            else:
+                print("Cancelled")
+                self.run_next_test()
         
     def visualwindow(self):
         if self.visualWindow is None:
@@ -178,6 +191,7 @@ class MainWindow(QMainWindow):
         self.report = True
         # Define the sequence of test windows to run
         self.test_sequence = [
+            self.namewindow,
             self.lcdwindow,
             self.kbwindow,
             self.camwindow,
@@ -200,9 +214,10 @@ class MainWindow(QMainWindow):
         upower = UPowerManager()
         healthdata = []
         for device in upower.enumerate_devices():
-            healthdata.append(upower.print_battery_info(device)["Capacity"])
-        generate_report("test", self.test_results)
-        print("Testing complete:", self.test_results)
+            if "battery" in device.lower():
+                healthdata.append(upower.print_battery_info(device)["Capacity"])
+        self.test_results['BAT'] = healthdata
+        generate_report(self.test_results['NAME'], self.test_results)
 
         self.report = False
 

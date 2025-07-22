@@ -15,7 +15,7 @@ class KeyEventEmitter(QObject):
 
 class KBWindow(QMainWindow):
 
-    dataSent = Signal(bool)
+    dataSent = Signal(str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -112,10 +112,10 @@ class KBWindow(QMainWindow):
         )
 
         if reply == QMessageBox.Yes:
-            self.send_data(True)
+            self.send_data("Goed")
             event.accept()
         else:
-            self.send_data(False)
+            self.send_data("Kapot")
             event.accept()
 
     def on_close(self):

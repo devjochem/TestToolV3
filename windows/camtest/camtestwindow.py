@@ -12,7 +12,7 @@ from windows.camtest.camtest import Ui_MainWindow
 
 class CamWindow(QMainWindow):
 
-    dataSent = Signal(bool)
+    dataSent = Signal(str)
 
     def __init__(self):
         super().__init__()
@@ -68,10 +68,10 @@ class CamWindow(QMainWindow):
         )
 
         if reply == QMessageBox.Yes:
-            self.send_data(True)
+            self.send_data("Goed")
             event.accept()
         else:
-            self.send_data(False)
+            self.send_data("Kapot")
             event.accept()
 
     def send_data(self, data):
