@@ -1,10 +1,11 @@
 import logging
 import sys
 
-from PySide6.QtCore import Slot, QByteArray, qWarning, QFile, QIODevice, QBuffer
+from PySide6.QtCore import Slot, QByteArray, qWarning, QFile, QIODevice, QBuffer, Signal
 from PySide6.QtMultimedia import QAudioDevice, QAudioFormat, QAudioSource, QAudio, QMediaDevices, QAudioSink
 from PySide6.QtWidgets import QApplication, QMainWindow
 
+from windows.audiotest.AUDIODialog import AUDIODialog
 from windows.audiotest.audiotest import Ui_MainWindow
 from windows.audiotest.renderarea import RenderArea, AudioInfo
 
@@ -14,6 +15,8 @@ import numpy as np
 
 
 class AudioTest(QMainWindow):
+
+    dataSent = Signal(dict)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -170,6 +173,20 @@ class AudioTest(QMainWindow):
     def volume_changed(self, value):
         if self.m_audioSink is not None:
             self.m_audioSink.setVolume(value / 100.0)
+
+    def closeEvent(self, event):
+        dialog = AUDIODialog()
+        if dialog.exec():  # This runs the dialog modally and blocks until closed
+            data = dialog.get_data()
+            self.send_data(data)
+            event.accept()
+        else:
+            self.send_data("Test canceled.")
+            event.ignore()
+
+    def send_data(self, data):
+        print(data)
+        self.dataSent.emit(data)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

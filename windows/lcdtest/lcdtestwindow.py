@@ -1,15 +1,14 @@
 # This Python file uses the following encoding: utf-8
-
+from PySide6.QtCore import Signal
 from PySide6.QtGui import QKeyEvent
 from PySide6.QtWidgets import QMainWindow
 
-# Important:
-# You need to run the following command to generate the ui_form.py file
-#     pyside6-uic form.ui -o ui_form.py, or
-#     pyside2-uic form.ui -o ui_form.py
+from windows.lcdtest.LCDDialog import LCDDialog
 from windows.lcdtest.lcd import Ui_LCDTest
 
 class LCDWindow(QMainWindow):
+    dataSent = Signal(str)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_LCDTest()
@@ -30,4 +29,15 @@ class LCDWindow(QMainWindow):
         color = self.colors.pop(0)
         self.colors.append(color)
         self.setStyleSheet(f"background-color: {color};")
+
+    def closeEvent(self, event):
+        dialog = LCDDialog()
+        if dialog.exec():  # This runs the dialog modally and blocks until closed
+            text = dialog.get_input_text()
+            self.send_data(text)
+        else:
+            self.send_data("Test canceled.")
+
+    def send_data(self, data):
+        self.dataSent.emit(data)
 

@@ -1,8 +1,11 @@
-# This Python file uses the following encoding: utf-8
 import logging
 import sys
+
+from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QMainWindow, QAbstractItemView, QTableWidgetItem, QApplication
 
+from lib.batteryinfo import UPowerManager
+from lib.results import generate_report
 from lib.systemspecs import Specs
 from windows.audiotest.audiotestwindow import AudioTest
 from windows.console.console import ConsoleWindow
@@ -14,6 +17,7 @@ from windows.battest.battestwintest import BatWindow
 
 from windows.mainwindow.form import Ui_MainWindow
 from windows.touchtest.touchWindow import TouchTester
+from windows.visualtest.visualwindow import VisualDialog
 
 
 def info(key, data):
@@ -26,8 +30,22 @@ def info(key, data):
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.report = None
+        self.visualWindow = None
+        self.audioWindow = None
+        self.touchWindow = None
+        self.camWindow = None
+        self.kbWindow = None
+        self.lcdWindow = None
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.test_results = {
+            "LCD": "Not tested",
+            "KB": "Not tested",
+            "BAT": "Not detected",
+            "CAM": "Not tested",
+            "AUDIO": "Not tested",
+        }
 
         logging.basicConfig(filename="./AppLog.log",
                             format='%(asctime)s - %(levelname)s - %(message)s',
@@ -44,6 +62,7 @@ class MainWindow(QMainWindow):
         #self.ui.actionUpdate.triggered.connect(lambda p: self_update())
         #self.ui.actionConsole.triggered.connect(lambda p: ConsoleWindow().show())
         self.ui.pushButton_ts.clicked.connect(lambda p: self.touchwindow())
+        self.ui.reportButton.clicked.connect(lambda p: self.start_report())
         log.info("TestTool started")
         specs = Specs()
         self.specs = specs.getSpecs()
@@ -80,6 +99,7 @@ class MainWindow(QMainWindow):
 
         self.text.append(info("VENDOR", self.specs['vendor']))
         self.text.append(info("MODEL", self.specs['model']))
+        self.text.append(info("SERIAL", self.specs['serial']))
         self.text.append(info("CPU", self.specs['cpu']))
         self.text.append(info("RAM", self.specs['ram']))
 
@@ -95,21 +115,98 @@ class MainWindow(QMainWindow):
         self.consoleWindow.show()
 
     def lcdwindow(self):
-        self.lcdWindow = LCDWindow()
-        self.lcdWindow.show()
+        if self.lcdWindow is None:
+            self.lcdWindow = LCDWindow()
+            self.lcdWindow.dataSent.connect(self.receive_data_lcd)
         self.lcdWindow.showFullScreen()
 
+    @Slot(str)
+    def receive_data_lcd(self, text):
+        self.test_results['LCD'] = text
+        self.run_next_test()
+
     def kbwindow(self):
-        self.kbWindow = KBWindow()
+        if self.kbWindow is None:
+            self.kbWindow = KBWindow()
+            self.kbWindow.dataSent.connect(self.receive_data_kb)
         self.kbWindow.show()
 
+    @Slot(bool)
+    def receive_data_kb(self, data):
+        self.test_results['KB'] = data
+        self.run_next_test()
+
     def camwindow(self):
-        self.camWindow = CamWindow()
+        if self.camWindow is None:
+            self.camWindow = CamWindow()
+            self.camWindow.dataSent.connect(self.receive_data_cam)
         self.camWindow.show()
+
+    @Slot(bool)
+    def receive_data_cam(self, data):
+        self.test_results['CAM'] = data
+        self.run_next_test()
+
+    def audiowindow(self):
+        if self.audioWindow is None:
+            self.audioWindow = AudioTest()
+            self.audioWindow.dataSent.connect(self.receive_data_audio)
+        self.audioWindow.show()
+
+    @Slot(dict)
+    def receive_data_audio(self, data):
+        self.test_results['AUDIO'] = data
+        self.run_next_test()
+        
+    def visualwindow(self):
+        if self.visualWindow is None:
+            self.visualWindow = VisualDialog()
+            if self.visualWindow.exec():
+                data = self.visualWindow.get_checkbox_data()
+                print("Checkbox states:", data)
+                self.test_results["VISUAL"] = data
+                self.run_next_test()
+            else:
+                print("Cancelled")
+                self.run_next_test()
 
     def touchwindow(self):
         self.touchWindow = TouchTester()
         self.touchWindow.show()
+
+    def start_report(self):
+        self.report = True
+        # Define the sequence of test windows to run
+        self.test_sequence = [
+            self.lcdwindow,
+            self.kbwindow,
+            self.camwindow,
+            self.audiowindow,
+            self.visualwindow
+        ]
+        self.current_test_index = 0
+        self.run_next_test()
+
+    def run_next_test(self):
+        if self.current_test_index < len(self.test_sequence):
+            test_func = self.test_sequence[self.current_test_index]
+            self.current_test_index += 1
+            test_func()
+        else:
+            self.finalize_report()
+
+    def finalize_report(self):
+        # All tests done — for now, just print results
+        upower = UPowerManager()
+        healthdata = []
+        for device in upower.enumerate_devices():
+            healthdata.append(upower.print_battery_info(device)["Capacity"])
+        generate_report("test", self.test_results)
+        print("Testing complete:", self.test_results)
+
+        self.report = False
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     w = MainWindow()

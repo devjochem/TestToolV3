@@ -14,8 +14,8 @@
    <string>Jochems TestTool</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout" rowstretch="3,4" columnstretch="1,10,10" columnminimumwidth="0,0,0">
-    <item row="0" column="0" rowspan="2">
+   <layout class="QGridLayout" name="gridLayout" rowstretch="1,2,1,1,30,30" columnstretch="1,10,10" columnminimumwidth="0,0,0">
+    <item row="4" column="0" rowspan="2">
      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0">
       <property name="spacing">
        <number>3</number>
@@ -67,7 +67,10 @@
       </item>
      </layout>
     </item>
-    <item row="0" column="1">
+    <item row="4" column="2">
+     <widget class="QTableWidget" name="diskTable"/>
+    </item>
+    <item row="4" column="1">
      <widget class="QTextEdit" name="userOutput">
       <property name="readOnly">
        <bool>true</bool>
@@ -84,11 +87,41 @@ li.checked::marker { content: &quot;\2612&quot;; }
       </property>
      </widget>
     </item>
-    <item row="1" column="1" colspan="2">
+    <item row="5" column="1" colspan="2">
      <widget class="BatWidget" name="batteryTable"/>
     </item>
-    <item row="0" column="2">
-     <widget class="QTableWidget" name="diskTable"/>
+    <item row="1" column="0" colspan="3">
+     <widget class="QPushButton" name="reportButton">
+      <property name="text">
+       <string>Maak een raport</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" colspan="3">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="0" column="0" colspan="3">
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
     </item>
    </layout>
   </widget>

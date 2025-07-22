@@ -2,15 +2,18 @@ import sys
 
 import numpy as np
 from PySide6 import QtGui
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, Slot, Signal
 from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QApplication, QMainWindow,QPushButton
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox
 from windows.camtest.video import VideoThread
 import cv2
 
 from windows.camtest.camtest import Ui_MainWindow
 
 class CamWindow(QMainWindow):
+
+    dataSent = Signal(bool)
+
     def __init__(self):
         super().__init__()
         self.thread = None
@@ -54,12 +57,32 @@ class CamWindow(QMainWindow):
         return source
 
     def closeEvent(self, event):
+        self.on_close()
+        # Optionally, confirm the close with the user
+        reply = QMessageBox.question(
+            self,
+            "CAM Results",
+            "Werkt de webcam goed?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No,
+        )
+
+        if reply == QMessageBox.Yes:
+            self.send_data(True)
+            event.accept()
+        else:
+            self.send_data(False)
+            event.accept()
+
+    def send_data(self, data):
+        self.dataSent.emit(data)
+
+    def on_close(self):
         if self.thread is None:
             print("Thread is none!")
             return
         self.thread.release()
         self.thread.exit(0)
-        event.accept()
 
     @Slot(np.ndarray)
     def update_image(self, cv_img):
